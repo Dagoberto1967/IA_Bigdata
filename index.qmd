@@ -1,0 +1,1289 @@
+---
+title: "IA_Big Data y aprendizaje supervisado"
+subtitle: "Unidad 1. Fundamentos conceptuales y modelos de predicción"
+author: 
+  - name: Dagoberto Salgado Horta
+    affiliation: "Escuela Superior de Administración Pública"
+    affiliation-url: "https://www.esap.edu.co/"
+date: today
+lang: es
+title-block-banner: "#98b6ed"
+
+format:
+  html:
+    page-layout: full
+    fontsize: 14pt
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    number-sections: true
+    code-fold: true
+    code-summary: "Ver código"
+    theme: dark
+    highlight-style: monokai
+    html-math-method: katex
+    smooth-scroll: true
+    link-external-newwindow: true
+    code-overflow: scroll
+    favicon: favicon.ico
+    css: estilos.css
+    
+editor: visual
+
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+    fig.align: center
+    fig.width: 6
+    fig.height: 6
+    out.width: "70%"
+---
+
+
+
+```{=html}
+<div style="position:absolute; top:10px; right:10px;">
+<img src="Logo_esap.png" width="150">
+</div>
+```
+
+```{=html}
+<style>
+body{
+  background-color:#f7f6ed;
+  font-size:130%;
+  text-align:justify;
+}
+</style>
+```
+
+# .Cargar paquetes
+
+```{r}
+ipak <- function(pkg){
+
+  options(repos = c(CRAN="https://cloud.r-project.org"))
+
+  new.pkg <- pkg[!(pkg %in% rownames(installed.packages()))]
+
+  if(length(new.pkg)) install.packages(new.pkg, dependencies = TRUE)
+
+  invisible(lapply(pkg, function(p)
+    suppressPackageStartupMessages(library(p, character.only = TRUE))
+  ))
+}
+
+packages <- c("tidyverse","kableExtra","psych","readxl")
+
+ipak(packages)
+```
+
+# .Presentación de la unidad
+
+La inteligencia artificial (IA), el Big Data y el aprendizaje automático están transformando la forma en que las organizaciones producen información, reconocen patrones y toman decisiones. En la administración pública, estas herramientas pueden apoyar la planeación, la asignación de recursos, la evaluación de programas y la prestación de servicios a la ciudadanía.
+
+Este módulo presenta dos componentes. El primero desarrolla los conceptos esenciales de computación, Big Data, ciencia de datos, inteligencia artificial y aprendizaje automático, así como la relación entre estadística y modelos predictivos. El segundo introduce el aprendizaje supervisado, explica su lógica de predicción, distingue los tipos de datos y desarrolla procedimientos básicos de entrenamiento y evaluación mediante R.
+
+::: callout-important
+**Principio orientador:** un modelo predictivo no reemplaza el juicio profesional ni la responsabilidad institucional. Sus resultados dependen de la calidad de los datos, de los supuestos, del diseño de evaluación y del contexto en el que se utiliza.
+:::
+
+# .Objetivo general
+
+Comprender los fundamentos conceptuales de la inteligencia artificial, el Big Data y el aprendizaje supervisado, identificando el papel de la estadística y aplicando procedimientos introductorios de preparación, entrenamiento y evaluación de modelos predictivos en R.
+
+**Resultados de aprendizaje**
+
+Al finalizar esta unidad, el estudiante estará en capacidad de:
+
+1. Explicar hitos relevantes de la evolución de la computación y de la inteligencia artificial.
+2. Diferenciar computación, Big Data, ciencia de datos, inteligencia artificial y aprendizaje automático.
+3. Describir las dimensiones del Big Data y reconocer diferentes tipos de datos.
+4. Explicar la relación entre estadística, IA y modelos predictivos.
+5. Diferenciar problemas de regresión y clasificación.
+6. Identificar variables predictoras y variables objetivo en un problema supervisado.
+7. Describir las etapas de entrenamiento, validación y prueba de un modelo.
+8. Ajustar modelos introductorios de regresión y clasificación en R.
+9. Interpretar métricas básicas de desempeño y reconocer limitaciones de los modelos.
+
+**Mapa de contenidos**
+
+- **1.1. Conceptos esenciales de IA y Big Data**
+  - Historia y conceptos básicos de computación.
+  - Big Data, ciencia de datos y aprendizaje automático.
+  - Relación entre IA, estadística y modelos predictivos.
+- **1.2. Aprendizaje supervisado: fundamentos**
+  - Concepto y lógica de predicción.
+  - Regresión y clasificación.
+  - Tipos de datos y preparación.
+  - Entrenamiento, validación y prueba.
+  - Evaluación básica de modelos.
+
+# .Conceptos esenciales de IA y Big Data
+
+**Historia y conceptos básicos de computación**
+
+**¿Qué es la computación?**
+
+La computación es el campo que estudia los métodos y sistemas para representar, almacenar, procesar y comunicar información mediante procedimientos algorítmicos. Incluye los fundamentos teóricos del cálculo, el diseño de hardware y software, las bases de datos, las redes y los sistemas de información.
+
+Un **algoritmo** es una secuencia finita, ordenada y precisa de instrucciones que permite resolver un problema o realizar una tarea.
+
+De forma general, un algoritmo recibe datos de entrada, ejecuta un conjunto de operaciones y produce una salida:
+
+$$
+\text{Entrada}\longrightarrow\text{Procesamiento}\longrightarrow\text{Salida}
+$$
+
+Por ejemplo, el cálculo de la media aritmética de $n$ observaciones se expresa como:
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+
+En este caso, los datos de entrada son $x_1,x_2,\ldots,x_n$, el procesamiento consiste en sumar las observaciones y dividir el resultado entre $n$, y la salida es la media.
+
+**Componentes de un sistema computacional**
+
+- **Hardware:** componentes físicos, como procesador, memoria, disco y dispositivos periféricos.
+- **Software:** programas e instrucciones que permiten ejecutar tareas.
+- **Datos:** representaciones de hechos, mediciones, registros o acontecimientos.
+- **Redes:** infraestructura que permite intercambiar información entre dispositivos.
+- **Usuarios y procesos:** personas y procedimientos que utilizan los sistemas para cumplir objetivos.
+
+**Datos, información y conocimiento**
+
+Es importante diferenciar estos tres conceptos:
+
+| Concepto | Definición | Ejemplo |
+|---|---|---|
+| Dato | Registro elemental de una característica | 450 solicitudes recibidas |
+| Información | Datos organizados y contextualizados | 300 de 450 solicitudes fueron atendidas |
+| Conocimiento | Interpretación que orienta una acción | Se requiere mejorar la capacidad de atención |
+
+En una entidad pública, el registro de trámites es un conjunto de datos. Al calcular porcentajes de atención y tiempos promedio se obtiene información. Al interpretar estos resultados y proponer cambios operativos se genera conocimiento aplicado.
+
+**Evolución histórica de la computación y la IA**
+
+| Periodo | Hito | Aporte |
+|---|---|---|
+| Décadas de 1940 y 1950 | Computadoras electrónicas | Automatización del cálculo y procesamiento de datos |
+| 1950 | Trabajo de Alan Turing sobre máquinas e inteligencia | Formulación de preguntas sobre la inteligencia de las máquinas |
+| 1956 | Taller de Dartmouth | Consolidación de la inteligencia artificial como campo de investigación |
+| Décadas de 1960 a 1980 | IA simbólica y sistemas expertos | Uso de reglas y conocimiento explícito |
+| Décadas de 1990 y 2000 | Minería de datos e internet | Crecimiento de datos digitales y análisis automatizado |
+| Década de 2010 | Aprendizaje profundo | Avances en imágenes, voz y lenguaje |
+| Década de 2020 | IA generativa | Producción de texto, imágenes, audio y código |
+
+La evolución de la IA no ha sido lineal. Los enfoques simbólicos, probabilísticos y basados en aprendizaje automático continúan coexistiendo.
+
+# .Big Data
+
+**Definición**
+
+Big Data se refiere a conjuntos de datos cuyo volumen, velocidad, diversidad o complejidad hacen necesario utilizar tecnologías y procedimientos especializados para su captura, almacenamiento, procesamiento y análisis.
+
+No existe un único tamaño que determine cuándo un conjunto de datos es Big Data. La dificultad depende de la infraestructura, la velocidad de generación, los formatos y los objetivos del análisis.
+
+**Las cinco dimensiones del Big Data**
+
+Las dimensiones más conocidas son las **5 V**:
+
+1. **Volumen:** cantidad de datos que se generan y almacenan.
+2. **Velocidad:** rapidez con la que los datos se producen, reciben y procesan.
+3. **Variedad:** diversidad de fuentes y formatos.
+4. **Veracidad:** calidad, consistencia, precisión y confiabilidad.
+5. **Valor:** utilidad que se obtiene al transformar los datos en conocimiento para tomar decisiones.
+
+| Dimensión | Pregunta | Ejemplo en administración pública |
+|---|---|---|
+| Volumen | ¿Cuántos datos existen? | Millones de registros de trámites |
+| Velocidad | ¿Con qué rapidez llegan? | Sensores de movilidad en tiempo real |
+| Variedad | ¿Qué formatos tienen? | Tablas, textos, imágenes y audio |
+| Veracidad | ¿Son confiables? | Registros duplicados o incompletos |
+| Valor | ¿Qué decisión apoyan? | Distribución de personal según demanda |
+
+::: callout-note
+Las 5 V constituyen un marco introductorio. En algunos enfoques se agregan otras dimensiones, como variabilidad, visualización y vulnerabilidad.
+:::
+
+**Tipos de datos según su estructura**
+
+**Datos estructurados:** organizados en filas y columnas con un esquema definido. Ejemplo: una base de datos de trámites con fecha, tipo de solicitud y estado.
+
+**Datos semiestructurados:** presentan etiquetas o una organización flexible. Ejemplos: archivos JSON y XML.
+
+**Datos no estructurados:** no siguen una estructura tabular predefinida. Ejemplos: fotografías, videos, grabaciones y documentos de texto libre.
+
+**Tecnologías relacionadas**
+
+En proyectos de Big Data pueden utilizarse sistemas de almacenamiento distribuido, procesamiento paralelo, motores de consulta y servicios de nube. Herramientas como Hadoop y Apache Spark permiten procesar datos a gran escala.
+
+Sin embargo, no todos los problemas requieren infraestructura Big Data. Para conjuntos pequeños o medianos, R, Python, hojas de cálculo o bases de datos relacionales pueden ser suficientes.
+
+# .Ciencia de datos
+
+La ciencia de datos es un campo interdisciplinario que integra estadística, matemáticas, programación, conocimiento del contexto y comunicación para extraer información útil de los datos.
+
+Su propósito no se limita a construir algoritmos. Incluye formular preguntas, obtener datos, evaluar su calidad, analizarlos, comunicar resultados y apoyar decisiones.
+
+**Disciplinas que la integran**
+
+- **Estadística:** descripción, inferencia, probabilidad, diseño de estudios y modelación.
+- **Matemáticas:** álgebra lineal, cálculo, optimización y métodos numéricos.
+- **Computación:** programación, algoritmos, bases de datos e infraestructura.
+- **Conocimiento del dominio:** comprensión del problema institucional o social.
+- **Comunicación:** visualización, interpretación y presentación de resultados.
+
+**Ciclo de vida de un proyecto de ciencia de datos**
+
+1. Definir el problema y la pregunta de análisis.
+2. Identificar y obtener los datos.
+3. Revisar calidad, consistencia y pertinencia.
+4. Limpiar y transformar la información.
+5. Explorar los datos mediante estadísticas y gráficos.
+6. Construir modelos cuando el problema lo requiera.
+7. Evaluar resultados y limitaciones.
+8. Comunicar hallazgos y apoyar decisiones.
+9. Monitorear el desempeño si el modelo se implementa.
+
+$$
+\text{Problema}\rightarrow\text{Datos}\rightarrow\text{Preparación}
+\rightarrow\text{Exploración}\rightarrow\text{Modelo}
+\rightarrow\text{Evaluación}\rightarrow\text{Decisión}
+$$
+
+El ciclo es iterativo: los resultados pueden llevar a redefinir el problema o mejorar la preparación de los datos.
+
+**Tipos de análisis de datos**
+
+| Tipo | Pregunta central | Ejemplo |
+|---|---|---|
+| Descriptivo | ¿Qué ocurrió? | ¿Cuántos trámites se atendieron? |
+| Diagnóstico | ¿Por qué ocurrió? | ¿Qué factores se relacionan con las demoras? |
+| Predictivo | ¿Qué podría ocurrir? | ¿Cuántas solicitudes se recibirán? |
+| Prescriptivo | ¿Qué conviene hacer? | ¿Cómo distribuir el personal disponible? |
+
+La predicción no demuestra causalidad. Un modelo puede anticipar un resultado sin identificar qué intervención produciría un cambio.
+
+**Inteligencia artificial y aprendizaje automático**
+
+**Inteligencia artificial**
+
+La inteligencia artificial es un campo de la informática que desarrolla sistemas capaces de realizar tareas asociadas con capacidades como reconocimiento de patrones, comprensión del lenguaje, planificación, generación de contenidos y apoyo a decisiones.
+
+La IA comprende diferentes enfoques:
+
+- **IA simbólica:** utiliza reglas, lógica y representaciones explícitas del conocimiento.
+- **IA basada en datos:** aprende patrones a partir de observaciones.
+- **IA generativa:** produce nuevos contenidos, como texto, imágenes, audio o código.
+
+**Aprendizaje automático (*Machine Learning*)**
+
+El aprendizaje automático es una rama de la IA que desarrolla algoritmos capaces de aprender patrones a partir de datos y utilizarlos para clasificar, estimar o predecir resultados.
+
+En lugar de programar todas las reglas de forma explícita, se proporciona al algoritmo un conjunto de ejemplos para que ajuste una función o estructura matemática.
+
+**Aprendizaje profundo (*Deep Learning*)**
+
+Es una familia de métodos de aprendizaje automático basada en redes neuronales con múltiples capas. Se utiliza en reconocimiento de imágenes, procesamiento del lenguaje, voz y otras tareas complejas.
+
+La relación conceptual se representa de manera simplificada como:
+
+$$
+\text{IA}\supset\text{Aprendizaje automático}
+\supset\text{Aprendizaje profundo}
+$$
+
+No toda IA utiliza aprendizaje automático y no todo aprendizaje automático utiliza redes neuronales profundas.
+
+**Relación entre IA, estadística y modelos predictivos**
+
+La estadística proporciona fundamentos para describir datos, estimar parámetros, cuantificar incertidumbre, contrastar hipótesis y evaluar modelos. El aprendizaje automático comparte estos fundamentos y los combina con algoritmos computacionales y procedimientos de optimización.
+
+La estadística y el aprendizaje automático no son disciplinas opuestas. La regresión lineal, por ejemplo, puede utilizarse tanto para explicar relaciones como para predecir valores.
+
+**Diferencias de énfasis**
+
+| Aspecto | Estadística inferencial | Aprendizaje automático |
+|---|---|---|
+| Propósito frecuente | Explicar, estimar e inferir | Predecir y generalizar |
+| Pregunta | ¿Qué relación existe y con qué incertidumbre? | ¿Qué resultado se espera para nuevos casos? |
+| Métodos | Regresión, ANOVA, pruebas de hipótesis | Árboles, bosques, máquinas de soporte vectorial y redes neuronales |
+| Evaluación | Supuestos, estimaciones e intervalos | Desempeño en datos no utilizados en el entrenamiento |
+| Interpretación | Suele ser central | Depende del algoritmo y de la aplicación |
+
+Estas diferencias son orientativas: los métodos y objetivos se superponen.
+
+
+**Aprendizaje supervisado: fundamentos**
+
+**Concepto de aprendizaje supervisado**
+
+El aprendizaje supervisado es un enfoque de aprendizaje automático en el que un algoritmo aprende a partir de datos que contienen ejemplos de entrada y una respuesta conocida. El objetivo es encontrar una función que relacione las variables predictoras con la variable objetivo y que pueda utilizarse para estimar respuestas en casos nuevos.
+
+Se dispone de un conjunto de entrenamiento:
+
+$$
+\mathcal{D}=\{(x_i,y_i):i=1,2,\ldots,n\}
+$$
+
+Donde:
+
+- $x_i$ representa el conjunto de características o variables predictoras de la observación $i$.
+- $y_i$ representa la respuesta conocida.
+- $n$ es el número de observaciones.
+
+El algoritmo busca una función $f$ que permita aproximar la respuesta:
+
+$$
+\widehat{y}=f(x)
+$$
+
+La función se ajusta utilizando los ejemplos disponibles y luego se aplica a observaciones para las cuales la respuesta todavía no se conoce.
+
+**Ejemplo en administración pública**
+
+Una secretaría de educación dispone de registros históricos de estudiantes con información sobre asistencia, edad, resultados académicos y una variable que indica si el estudiante desertó.
+
+El objetivo puede ser estimar la probabilidad de deserción de nuevos estudiantes para orientar acciones de acompañamiento. La predicción debe utilizarse como apoyo y no como una etiqueta definitiva sobre una persona.
+
+**Lógica de predicción**
+
+El aprendizaje supervisado sigue, de manera general, esta secuencia:
+
+1. Se define una variable objetivo que se desea estimar.
+2. Se identifican las variables predictoras disponibles en el momento de la predicción.
+3. Se recolectan observaciones históricas con respuestas conocidas.
+4. Se preparan los datos y se separan en conjuntos.
+5. Se entrena el algoritmo.
+6. Se generan predicciones sobre datos nuevos.
+7. Se comparan las predicciones con los resultados reales.
+8. Se evalúa si el desempeño es suficiente para el propósito definido.
+
+$$
+\text{Datos etiquetados}\rightarrow\text{Entrenamiento}
+\rightarrow\text{Modelo ajustado}\rightarrow\text{Predicción}
+\rightarrow\text{Evaluación}
+$$
+
+**Variables predictoras y variable objetivo**
+
+- **Variables predictoras (X):** características utilizadas para estimar el resultado.
+- **Variable objetivo o respuesta (Y):** resultado que se desea predecir.
+
+Ejemplo:
+
+| Asistencia (%) | Promedio académico | Deserción |
+|---:|---:|---|
+| 95 | 4.2 | No |
+| 60 | 2.8 | Sí |
+| 88 | 3.9 | No |
+| 55 | 2.5 | Sí |
+
+En este ejemplo, asistencia y promedio académico son predictores, mientras que deserción es la variable objetivo.
+
+**Tipos de problemas supervisados**
+
+Los problemas supervisados se dividen principalmente en regresión y clasificación.
+
+**A. Regresión**
+
+Se utiliza cuando la variable objetivo es cuantitativa.
+
+Ejemplos:
+
+- Predecir el tiempo de atención de un trámite.
+- Estimar el gasto mensual de un programa.
+- Proyectar el número de solicitudes.
+- Estimar la demanda de servicios públicos.
+
+Un modelo de regresión produce un valor numérico:
+
+$$
+\widehat{Y}=f(X_1,X_2,\ldots,X_p)
+$$
+
+**B. Clasificación**
+
+Se utiliza cuando la variable objetivo es categórica.
+
+Ejemplos:
+
+- Clasificar solicitudes como prioritarias o no prioritarias.
+- Identificar registros con posible anomalía.
+- Clasificar estudiantes según una categoría de riesgo.
+- Determinar si un trámite puede superar el plazo establecido.
+
+En clasificación binaria, la respuesta puede tomar dos categorías, por ejemplo:
+
+$$
+Y\in\{0,1\}
+$$
+
+Un modelo puede estimar una probabilidad:
+
+$$
+\widehat{p}(X)=P(Y=1\mid X)
+$$
+
+Luego, mediante un umbral de decisión, se asigna una clase. Por ejemplo, si el umbral es 0.5:
+
+$$
+\widehat{Y}=
+\begin{cases}
+1 & \text{si }\widehat{p}(X)\geq 0.5\\
+0 & \text{si }\widehat{p}(X)<0.5
+\end{cases}
+$$
+
+El umbral no tiene que ser siempre 0.5. Debe elegirse de acuerdo con los costos de los falsos positivos y falsos negativos y con el propósito institucional.
+
+**Comparación entre regresión y clasificación**
+
+| Característica | Regresión | Clasificación |
+|---|---|---|
+| Variable objetivo | Cuantitativa | Categórica |
+| Resultado | Valor numérico | Clase o probabilidad por clase |
+| Ejemplo | Tiempo de atención | Trámite oportuno/no oportuno |
+| Métricas | MAE, RMSE, $R^2$ | Exactitud, precisión, sensibilidad, F1 |
+
+**Tipos de datos y variables**
+
+La elección del modelo depende, entre otros aspectos, del tipo de variables disponibles.
+
+**Según su naturaleza**
+
+**Variables cualitativas nominales:** categorías sin orden natural. Ejemplo: tipo de trámite, municipio o dependencia.
+
+**Variables cualitativas ordinales:** categorías con orden. Ejemplo: nivel bajo, medio y alto.
+
+**Variables cuantitativas discretas:** conteos. Ejemplo: número de solicitudes.
+
+**Variables cuantitativas continuas:** mediciones que pueden tomar valores en un intervalo. Ejemplo: tiempo de atención o ingreso.
+
+**Según su función en el modelo**
+
+| Función | Descripción | Ejemplo |
+|---|---|---|
+| Predictora | Variable usada para estimar | Número de solicitudes |
+| Objetivo | Resultado que se desea predecir | Tiempo de atención |
+| Identificador | Código para reconocer un registro | Código de trámite |
+| Fecha o tiempo | Orden temporal de observaciones | Fecha de recepción |
+
+Los identificadores no deben incorporarse automáticamente como predictores: pueden permitir que el algoritmo memorice patrones sin significado generalizable. Las fechas pueden ser útiles, pero deben transformarse con criterio y respetar el orden temporal.
+
+**Codificación de variables categóricas**
+
+Muchos algoritmos requieren que las categorías se representen numéricamente. Una opción es la codificación *one-hot*, que crea indicadores binarios para las categorías.
+
+Por ejemplo, para la variable `modalidad`:
+
+| Modalidad | Presencial | Virtual |
+|---|---:|---:|
+| Presencial | 1 | 0 |
+| Virtual | 0 | 1 |
+
+En R, los modelos lineales pueden gestionar variables categóricas cuando están definidas como factores.
+
+**Preparación de los datos**
+
+La preparación es una etapa fundamental. Algunas tareas frecuentes son:
+
+- Revisar valores faltantes.
+- Identificar duplicados.
+- Corregir errores de digitación.
+- Verificar unidades y rangos válidos.
+- Transformar variables categóricas.
+- Examinar valores extremos.
+- Evitar que información posterior al resultado se filtre en los predictores.
+- Documentar las decisiones de limpieza.
+
+La preparación debe realizarse respetando la estructura del problema. En una predicción temporal, por ejemplo, no se deben utilizar observaciones futuras para predecir el pasado.
+
+**Fuga de información (*data leakage*)**
+
+Se presenta cuando el modelo utiliza información que no estaría disponible en el momento real de la predicción o cuando el conjunto de prueba influye en el entrenamiento.
+
+La fuga de información produce evaluaciones artificialmente optimistas. Para evitarla, las transformaciones que aprenden parámetros de los datos —como imputación, escalamiento o selección de variables— deben ajustarse con el conjunto de entrenamiento y luego aplicarse al conjunto de prueba.
+
+**Entrenamiento, validación y prueba**
+
+Los datos suelen dividirse en tres conjuntos:
+
+- **Entrenamiento:** se utiliza para ajustar los parámetros del modelo.
+- **Validación:** se utiliza para comparar modelos o seleccionar hiperparámetros.
+- **Prueba:** se reserva para la evaluación final del procedimiento elegido.
+
+Una división introductoria frecuente es 70 % para entrenamiento y 30 % para prueba. En estudios más rigurosos puede utilizarse validación cruzada o una separación adicional para validación.
+
+$$
+D=D_{\text{entrenamiento}}\cup D_{\text{validación}}
+\cup D_{\text{prueba}}
+$$
+
+Los conjuntos deben ser independientes en el sentido requerido por el diseño. En datos temporales se debe respetar el orden cronológico y no realizar una división aleatoria que mezcle futuro y pasado.
+
+**Sobreajuste y subajuste**
+
+**Sobreajuste (*overfitting*):** el modelo se adapta demasiado a los detalles del conjunto de entrenamiento y presenta bajo desempeño en datos nuevos.
+
+**Subajuste (*underfitting*):** el modelo es demasiado simple para representar adecuadamente el patrón de los datos.
+
+La evaluación con datos separados, la validación cruzada, la regularización y la selección cuidadosa de variables ayudan a controlar estos problemas.
+
+# .Laboratorio práctico en R
+
+Los ejemplos utilizan datos sintéticos. No corresponden a personas ni a registros reales de una entidad. Se emplea `ggplot2` para las visualizaciones y funciones incluidas en R para ajustar y evaluar modelos.
+
+**Preparación del entorno**
+
+```{r}
+# Instalar una sola vez, si es necesario:
+# install.packages("ggplot2")
+
+library(ggplot2)
+
+set.seed(2026)
+```
+
+**Ejemplo A: regresión supervisada**
+
+**Contexto**
+
+Una oficina pública desea estimar el tiempo promedio de atención a partir del número diario de solicitudes recibidas.
+
+**Generación de datos**
+
+```{r}
+set.seed(2026)
+
+n <- 150
+
+datos_reg <- data.frame(
+  dia = 1:n,
+  solicitudes = sample(10:80, n, replace = TRUE)
+)
+
+datos_reg$tiempo <- 6 +
+  0.75 * datos_reg$solicitudes +
+  rnorm(n, mean = 0, sd = 4)
+
+head(datos_reg)
+```
+
+**Exploración gráfica**
+
+```{r}
+ggplot(datos_reg, aes(x = solicitudes, y = tiempo)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    title = "Relación entre solicitudes y tiempo de atención",
+    subtitle = "Datos simulados",
+    x = "Solicitudes recibidas por día",
+    y = "Tiempo promedio de atención (minutos)"
+  ) +
+  theme_minimal()
+```
+
+**Separación de entrenamiento y prueba**
+
+```{r}
+set.seed(123)
+
+n_reg <- nrow(datos_reg)
+id_train_reg <- sample(
+  seq_len(n_reg),
+  size = floor(0.70 * n_reg)
+)
+
+train_reg <- datos_reg[id_train_reg, ]
+test_reg <- datos_reg[-id_train_reg, ]
+```
+
+**Entrenamiento del modelo**
+
+```{r}
+modelo_reg <- lm(
+  tiempo ~ solicitudes,
+  data = train_reg
+)
+
+summary(modelo_reg)
+```
+
+La función `lm()` ajusta una regresión lineal por mínimos cuadrados. El resultado muestra los coeficientes estimados y diferentes estadísticas del ajuste.
+
+**Predicción y evaluación**
+
+```{r}
+pred_reg <- predict(
+  modelo_reg,
+  newdata = test_reg
+)
+
+mae <- mean(abs(test_reg$tiempo - pred_reg))
+rmse <- sqrt(mean((test_reg$tiempo - pred_reg)^2))
+
+data.frame(
+  metrica = c("MAE", "RMSE"),
+  valor = c(mae, rmse)
+)
+```
+
+El MAE resume el error absoluto promedio. El RMSE penaliza con mayor intensidad los errores grandes. Ambos se expresan en minutos.
+
+**Observados frente a predichos**
+
+```{r}
+comparacion_reg <- data.frame(
+  observado = test_reg$tiempo,
+  predicho = as.numeric(pred_reg)
+)
+
+ggplot(comparacion_reg, aes(x = observado, y = predicho)) +
+  geom_point(alpha = 0.75) +
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    linetype = "dashed"
+  ) +
+  labs(
+    title = "Regresión: valores observados y predichos",
+    x = "Tiempo observado (minutos)",
+    y = "Tiempo predicho (minutos)"
+  ) +
+  theme_minimal()
+```
+
+Los puntos cercanos a la diagonal representan predicciones cercanas a los valores observados.
+
+**Predicción de un nuevo caso**
+
+```{r}
+nuevo_caso <- data.frame(solicitudes = 50)
+
+predict(
+  modelo_reg,
+  newdata = nuevo_caso,
+  interval = "prediction",
+  level = 0.95
+)
+```
+
+El intervalo de predicción estima un rango para una observación individual futura bajo los supuestos del modelo. No debe confundirse con el intervalo de confianza para la media.
+
+**Ejemplo B: clasificación supervisada**
+
+**Contexto**
+
+Una entidad desea identificar solicitudes que podrían superar el plazo institucional de respuesta. Se genera una base sintética con variables como número de documentos, carga diaria y complejidad del trámite. La variable objetivo indica si la solicitud se retrasó.
+
+Este ejemplo es exclusivamente pedagógico. Una clasificación de este tipo no debe utilizarse para negar derechos o servicios ni para tomar decisiones automáticas sin revisión institucional.
+
+**Construcción de datos**
+
+```{r}
+set.seed(2026)
+
+n_clas <- 400
+
+datos_clas <- data.frame(
+  documentos = sample(1:12, n_clas, replace = TRUE),
+  carga_diaria = sample(10:100, n_clas, replace = TRUE),
+  complejidad = sample(
+    c("Baja", "Media", "Alta"),
+    n_clas,
+    replace = TRUE,
+    prob = c(0.35, 0.40, 0.25)
+  )
+)
+
+datos_clas$complejidad <- factor(
+  datos_clas$complejidad,
+  levels = c("Baja", "Media", "Alta")
+)
+
+# Probabilidad simulada de retraso
+eta <- -3.2 +
+  0.12 * datos_clas$documentos +
+  0.025 * datos_clas$carga_diaria +
+  ifelse(datos_clas$complejidad == "Media", 0.5, 0) +
+  ifelse(datos_clas$complejidad == "Alta", 1.1, 0)
+
+prob_retraso <- plogis(eta)
+
+datos_clas$retraso <- rbinom(
+  n_clas,
+  size = 1,
+  prob = prob_retraso
+)
+
+datos_clas$retraso <- factor(
+  datos_clas$retraso,
+  levels = c(0, 1),
+  labels = c("No", "Si")
+)
+
+head(datos_clas)
+```
+
+**Distribución de la variable objetivo**
+
+```{r}
+ggplot(datos_clas, aes(x = retraso)) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    title = "Distribución de solicitudes según retraso",
+    x = "¿Presentó retraso?",
+    y = "Número de solicitudes"
+  ) +
+  theme_minimal()
+```
+
+**Relación entre carga y retraso**
+
+```{r}
+ggplot(
+  datos_clas,
+  aes(x = carga_diaria, fill = retraso)
+) +
+  geom_histogram(
+    bins = 15,
+    position = "identity",
+    alpha = 0.55
+  ) +
+  labs(
+    title = "Carga diaria según condición de retraso",
+    x = "Carga diaria de solicitudes",
+    y = "Frecuencia",
+    fill = "Retraso"
+  ) +
+  theme_minimal()
+```
+
+**Separación de entrenamiento y prueba**
+
+Para este ejemplo se utiliza una partición aleatoria. En aplicaciones temporales debe respetarse el orden cronológico.
+
+```{r}
+set.seed(321)
+
+n_clas <- nrow(datos_clas)
+
+id_train_clas <- sample(
+  seq_len(n_clas),
+  size = floor(0.70 * n_clas)
+)
+
+train_clas <- datos_clas[id_train_clas, ]
+test_clas <- datos_clas[-id_train_clas, ]
+```
+
+**Entrenamiento: regresión logística**
+
+La regresión logística es un modelo supervisado utilizado para clasificación binaria. Modela la probabilidad de que ocurra la categoría de interés.
+
+$$
+P(Y=1\mid X)=
+\frac{1}{1+\exp[-(\beta_0+\beta_1X_1+\cdots+\beta_pX_p)]}
+$$
+
+Su transformación logit se expresa como:
+
+$$
+\log\left(\frac{p}{1-p}\right)
+=\beta_0+\beta_1X_1+\cdots+\beta_pX_p
+$$
+
+En R se utiliza `glm()` con la familia `binomial`.
+
+```{r}
+modelo_clas <- glm(
+  retraso ~ documentos + carga_diaria + complejidad,
+  data = train_clas,
+  family = binomial
+)
+
+summary(modelo_clas)
+```
+
+**Predicción de probabilidades y clases**
+
+```{r}
+prob_pred <- predict(
+  modelo_clas,
+  newdata = test_clas,
+  type = "response"
+)
+
+umbral <- 0.50
+
+clase_pred <- ifelse(
+  prob_pred >= umbral,
+  "Si",
+  "No"
+)
+
+clase_pred <- factor(
+  clase_pred,
+  levels = c("No", "Si")
+)
+```
+
+El umbral de 0.50 es una decisión ilustrativa. En contextos reales debe seleccionarse considerando la finalidad, la prevalencia de la clase y el costo de cada tipo de error.
+
+**Matriz de confusión**
+
+La matriz de confusión compara las clases observadas con las clases predichas.
+
+```{r}
+matriz <- table(
+  Observado = test_clas$retraso,
+  Predicho = clase_pred
+)
+
+matriz
+```
+
+Sus componentes son:
+
+- **Verdadero negativo (VN):** el caso no presentó retraso y se predijo que no lo presentaría.
+- **Falso positivo (FP):** el caso no presentó retraso, pero se predijo retraso.
+- **Falso negativo (FN):** el caso presentó retraso, pero se predijo que no lo presentaría.
+- **Verdadero positivo (VP):** el caso presentó retraso y se predijo correctamente.
+
+**Métricas de clasificación**
+
+La exactitud (*accuracy*) mide la proporción total de clasificaciones correctas:
+
+$$
+Accuracy=\frac{VP+VN}{VP+VN+FP+FN}
+$$
+
+La precisión (*precision*) mide qué proporción de los casos predichos positivos realmente lo son:
+
+$$
+Precision=\frac{VP}{VP+FP}
+$$
+
+La sensibilidad (*recall*) mide qué proporción de los positivos reales fue identificada:
+
+$$
+Recall=\frac{VP}{VP+FN}
+$$
+
+La especificidad mide qué proporción de los negativos reales fue identificada:
+
+$$
+Especificidad=\frac{VN}{VN+FP}
+$$
+
+La medida F1 combina precisión y sensibilidad mediante su media armónica:
+
+$$
+F1=2\frac{Precision\times Recall}{Precision+Recall}
+$$
+
+```{r}
+VN <- matriz["No", "No"]
+FP <- matriz["No", "Si"]
+FN <- matriz["Si", "No"]
+VP <- matriz["Si", "Si"]
+
+accuracy <- (VP + VN) / sum(matriz)
+
+precision <- ifelse(
+  VP + FP == 0,
+  NA,
+  VP / (VP + FP)
+)
+
+recall <- ifelse(
+  VP + FN == 0,
+  NA,
+  VP / (VP + FN)
+)
+
+specificity <- ifelse(
+  VN + FP == 0,
+  NA,
+  VN / (VN + FP)
+)
+
+f1 <- ifelse(
+  is.na(precision) || is.na(recall) ||
+    precision + recall == 0,
+  NA,
+  2 * precision * recall / (precision + recall)
+)
+
+metricas_clas <- data.frame(
+  metrica = c(
+    "Exactitud",
+    "Precisión",
+    "Sensibilidad",
+    "Especificidad",
+    "F1"
+  ),
+  valor = c(
+    accuracy,
+    precision,
+    recall,
+    specificity,
+    f1
+  )
+)
+
+metricas_clas
+```
+
+La exactitud puede ser engañosa cuando las clases están desbalanceadas. Por eso es importante analizar sensibilidad, especificidad, precisión, F1 y, cuando corresponda, curvas ROC y AUC.
+
+**Interpretación de los dos ejemplos**
+
+En regresión, el resultado es un valor numérico, como el tiempo estimado de atención. La evaluación se realiza comparando predicciones y valores observados mediante métricas como MAE y RMSE.
+
+En clasificación, el modelo estima una probabilidad de pertenecer a una categoría y, según un umbral, asigna una clase. La matriz de confusión permite distinguir aciertos y errores de diferentes tipos.
+
+No existe una métrica universalmente mejor. La selección depende del objetivo, de la distribución de clases y de las consecuencias de equivocarse.
+
+# .Evaluación conceptual y ejercicios resueltos
+
+**Ejercicio resuelto 1: identificar el tipo de aprendizaje**
+
+**Enunciado:** una secretaría de educación tiene registros históricos de estudiantes. Para cada estudiante conoce asistencia, promedio académico y si desertó o no. Se desea estimar la deserción de estudiantes nuevos.
+
+**Solución:**
+
+1. Se conoce la respuesta histórica: desertó o no desertó.
+2. La variable objetivo es categórica.
+3. Se utilizan características de cada estudiante para estimar la categoría.
+4. Por tanto, es un problema de aprendizaje supervisado de clasificación.
+
+**Ejercicio resuelto 2: problema de regresión**
+
+**Enunciado:** un modelo estima el tiempo de respuesta a solicitudes mediante:
+
+$$
+\widehat{Y}=8+1.2X
+$$
+
+donde $X$ es el número de solicitudes y $Y$ el tiempo promedio en minutos.
+
+**a. Calcule el tiempo estimado para 15 solicitudes.**
+
+$$
+\widehat{Y}=8+1.2(15)=26
+$$
+
+La predicción es de 26 minutos.
+
+**b. Interprete la pendiente.**
+
+Por cada solicitud adicional, el tiempo promedio estimado aumenta 1.2 minutos, dentro del alcance del modelo.
+
+**c. Interprete el intercepto.**
+
+El valor 8 representa el tiempo estimado cuando $X=0$. Su interpretación práctica depende de si ese escenario tiene sentido en el contexto.
+
+**Ejercicio resuelto 3: métricas de clasificación**
+
+**Enunciado:** un modelo clasifica 100 solicitudes. La matriz de confusión es:
+
+| | Predicho: no retraso | Predicho: retraso |
+|---|---:|---:|
+| Observado: no retraso | 60 | 10 |
+| Observado: retraso | 8 | 22 |
+
+Por tanto:
+
+- $VN=60$
+- $FP=10$
+- $FN=8$
+- $VP=22$
+
+**Exactitud:**
+
+$$
+Accuracy=\frac{60+22}{100}=0.82
+$$
+
+El 82 % de las solicitudes fue clasificado correctamente.
+
+**Precisión:**
+
+$$
+Precision=\frac{22}{22+10}=0.6875
+$$
+
+De las solicitudes clasificadas como retrasadas, el 68.75 % realmente presentó retraso.
+
+**Sensibilidad:**
+
+$$
+Recall=\frac{22}{22+8}=0.7333
+$$
+
+El modelo identificó aproximadamente el 73.33 % de las solicitudes que realmente presentaron retraso.
+
+**Especificidad:**
+
+$$
+Especificidad=\frac{60}{60+10}=0.8571
+$$
+
+El modelo identificó correctamente aproximadamente el 85.71 % de las solicitudes que no presentaron retraso.
+
+**Medida F1:**
+
+$$
+F1=2\frac{0.6875(0.7333)}{0.6875+0.7333}
+\approx 0.7097
+$$
+
+La medida F1 es aproximadamente 0.71.
+
+# .Taller de aplicación
+
+**Ejercicio 1. Conceptos esenciales**
+
+Una alcaldía almacena registros de trámites, fotografías de infraestructura, grabaciones de llamadas y datos de sensores de movilidad.
+
+a. Clasifique los datos como estructurados, semiestructurados o no estructurados.
+
+b. Explique tres dimensiones de Big Data presentes en la situación.
+
+c. Proponga una pregunta de investigación que pueda abordarse mediante ciencia de datos.
+
+d. Explique qué información adicional necesitaría antes de construir un modelo predictivo.
+
+**Ejercicio 2. Identificación del aprendizaje supervisado**
+
+Una secretaría de educación cuenta con información histórica de estudiantes, incluyendo asistencia, edad, resultados académicos y una variable que indica si el estudiante desertó.
+
+a. Identifique la variable objetivo.
+
+b. Proponga tres variables predictoras.
+
+c. Determine si se trata de regresión o clasificación.
+
+d. Explique por qué no se debe utilizar información que solo se conoce después de la deserción.
+
+**Ejercicio 3. Regresión lineal**
+
+Un modelo de predicción del tiempo de respuesta es:
+
+$$
+\widehat{Y}=10+0.9X
+$$
+
+donde $X$ es el número de solicitudes recibidas.
+
+a. Calcule la predicción para 25 solicitudes.
+
+b. Interprete la pendiente.
+
+c. Interprete el intercepto.
+
+d. Explique por qué una predicción para 300 solicitudes podría ser poco confiable si los datos de entrenamiento solo contienen valores entre 10 y 80.
+
+**Ejercicio 4. Interpretación de métricas**
+
+Dos modelos se evalúan sobre el mismo conjunto de prueba:
+
+| Modelo | MAE | RMSE |
+|---|---:|---:|
+| A | 3.2 | 4.1 |
+| B | 2.7 | 5.0 |
+
+a. ¿Cuál presenta menor MAE?
+
+b. ¿Cuál presenta menor RMSE?
+
+c. Explique por qué las métricas pueden conducir a conclusiones diferentes.
+
+d. ¿Qué información adicional revisaría antes de seleccionar un modelo?
+
+**Ejercicio 5. Clasificación y matriz de confusión**
+
+Un modelo clasifica 200 solicitudes. Se obtiene:
+
+| | Predicho: no prioritario | Predicho: prioritario |
+|---|---:|---:|
+| Observado: no prioritario | 120 | 20 |
+| Observado: prioritario | 15 | 45 |
+
+a. Identifique VN, FP, FN y VP.
+
+b. Calcule la exactitud.
+
+c. Calcule la precisión.
+
+d. Calcule la sensibilidad.
+
+e. Explique cuál error podría ser más costoso para la entidad y por qué.
+
+**Ejercicio 6. Ética y uso institucional**
+
+Una entidad pública desea utilizar un algoritmo para priorizar visitas de inspección.
+
+a. Identifique dos riesgos de sesgo.
+
+b. Proponga dos medidas para proteger los datos personales.
+
+c. Explique por qué debe existir supervisión humana.
+
+d. Proponga una estrategia para monitorear diferencias de desempeño entre grupos.
+
+# .Solucionario orientador del taller
+
+**Ejercicio 1**
+
+a. Los registros tabulares de trámites y sensores pueden ser estructurados; los documentos JSON o XML, semiestructurados; las fotografías y grabaciones, no estructurados.
+
+b. Volumen: cantidad de registros. Variedad: diversidad de formatos. Velocidad: generación continua de datos. También deben considerarse veracidad y valor.
+
+c. Ejemplo: ¿qué zonas presentan mayores tiempos de atención de trámites?
+
+d. Se requiere conocer la finalidad, población, periodo, calidad de datos, variable objetivo, disponibilidad de predictores y restricciones legales.
+
+**Ejercicio 2**
+
+a. La variable objetivo es deserción.
+
+b. Asistencia, edad y resultados académicos.
+
+c. Clasificación supervisada, porque la respuesta es categórica.
+
+d. El uso de información futura produce fuga de información y genera una evaluación artificialmente optimista.
+
+**Ejercicio 3**
+
+a.
+
+$$
+\widehat{Y}=10+0.9(25)=32.5
+$$
+
+La predicción es de 32.5 unidades de tiempo.
+
+b. Por cada solicitud adicional, el tiempo estimado aumenta 0.9 unidades, en promedio.
+
+c. El intercepto representa el valor estimado cuando no se reciben solicitudes. Su interpretación depende del contexto.
+
+d. Se estaría extrapolando fuera del rango observado, por lo que no existe evidencia suficiente para asegurar que la relación se mantenga.
+
+**Ejercicio 4**
+
+a. El modelo B tiene menor MAE: 2.7.
+
+b. El modelo A tiene menor RMSE: 4.1.
+
+c. RMSE penaliza más los errores grandes. El modelo B puede presentar menor error absoluto promedio, pero algunos errores grandes que elevan su RMSE.
+
+d. Revisar distribución de errores, valores extremos, estabilidad, desempeño por subgrupos, interpretabilidad y costos de error.
+
+**Ejercicio 5**
+
+a. $VN=120$, $FP=20$, $FN=15$, $VP=45$.
+
+b.
+
+$$
+Accuracy=\frac{120+45}{200}=0.825
+$$
+
+Exactitud: 82.5 %.
+
+c.
+
+$$
+Precision=\frac{45}{45+20}=0.6923
+$$
+
+Precisión: aproximadamente 69.23 %.
+
+d.
+
+$$
+Recall=\frac{45}{45+15}=0.75
+$$
+
+Sensibilidad: 75 %.
+
+e. Depende de la finalidad. Si no identificar una solicitud prioritaria tiene consecuencias graves, el falso negativo puede ser especialmente costoso. La entidad debe definirlo antes de elegir el umbral.
+
+**Ejercicio 6**
+
+Las respuestas deben reconocer que los datos históricos pueden representar de forma desigual a los grupos, que se deben limitar los datos recolectados a una finalidad legítima y que las decisiones requieren auditoría y revisión humana. Una estrategia posible es comparar tasas de falsos positivos, falsos negativos y sensibilidad entre grupos, siempre que sea legal y metodológicamente apropiado.
+
+# .Síntesis de la unidad
+
+La computación proporciona los fundamentos y la infraestructura para procesar información. Big Data describe los retos asociados con el volumen, la velocidad, la variedad, la veracidad y el valor de los datos. La ciencia de datos integra estadística, matemáticas, programación y conocimiento del contexto para convertir datos en información útil.
+
+La inteligencia artificial comprende métodos para desarrollar sistemas capaces de realizar tareas complejas. Dentro de ella, el aprendizaje automático permite aprender patrones a partir de datos. El aprendizaje supervisado utiliza ejemplos con respuestas conocidas para construir modelos de regresión o clasificación.
+
+La estadística cumple un papel fundamental en todas las etapas: describe los datos, apoya la modelación, cuantifica incertidumbre y permite evaluar resultados. Un modelo debe probarse con datos que no participaron en su entrenamiento y sus resultados deben interpretarse considerando el contexto, la calidad de los datos y las consecuencias de los errores.
+
+# .Glosario
+
+| Término | Definición |
+|---|---|
+| Algoritmo | Secuencia finita de instrucciones para resolver una tarea |
+| Big Data | Datos cuya escala o complejidad exige métodos especializados |
+| Ciencia de datos | Campo interdisciplinario para obtener conocimiento de los datos |
+| Inteligencia artificial | Campo que desarrolla sistemas para realizar tareas asociadas con capacidades inteligentes |
+| Aprendizaje automático | Métodos que aprenden patrones a partir de datos |
+| Aprendizaje supervisado | Aprendizaje con observaciones que contienen respuestas conocidas |
+| Variable predictora | Característica utilizada para estimar una respuesta |
+| Variable objetivo | Resultado que se desea predecir |
+| Regresión | Modelación de una respuesta cuantitativa |
+| Clasificación | Asignación de observaciones a categorías |
+| Entrenamiento | Ajuste del modelo utilizando datos |
+| Validación | Comparación y selección de modelos o configuraciones |
+| Prueba | Evaluación final con datos reservados |
+| Sobreajuste | Ajuste excesivo al conjunto de entrenamiento |
+| Fuga de información | Uso indebido de información que no estaría disponible al predecir |
+| Matriz de confusión | Tabla que compara clases observadas y predichas |
+| MAE | Error absoluto medio |
+| RMSE | Raíz del error cuadrático medio |
+| Sensibilidad | Proporción de positivos reales identificados |
+| Especificidad | Proporción de negativos reales identificados |
+
+# .Referencias bibliográficas
+
+Las referencias se presentan en estilo APA 7. Se recomienda consultar las ediciones y recursos originales al preparar trabajos académicos.
+
+Bishop, C. M. (2006). *Pattern recognition and machine learning*. Springer.
+
+Breiman, L. (2001). Statistical modeling: The two cultures. *Statistical Science, 16*(3), 199–231. https://doi.org/10.1214/ss/1009213726
+
+Domingos, P. (2012). A few useful things to know about machine learning. *Communications of the ACM, 55*(10), 78–87. https://doi.org/10.1145/2347736.2347755
+
+Hastie, T., Tibshirani, R., & Friedman, J. (2009). *The elements of statistical learning: Data mining, inference, and prediction* (2nd ed.). Springer. https://doi.org/10.1007/978-0-387-84858-7
+
+James, G., Witten, D., Hastie, T., Tibshirani, R., & Taylor, J. (2023). *An introduction to statistical learning: With applications in R* (2nd ed.). Springer. https://www.statlearning.com/
+
+Kitchin, R. (2014). *The data revolution: Big data, open data, data infrastructures and their consequences*. SAGE.
+
+McCarthy, J., Minsky, M. L., Rochester, N., & Shannon, C. E. (2006). A proposal for the Dartmouth summer research project on artificial intelligence, August 31, 1955. *AI Magazine, 27*(4), 12–14. (Propuesta original de 1955).
+
+Turing, A. M. (1950). Computing machinery and intelligence. *Mind, 59*(236), 433–460. https://doi.org/10.1093/mind/LIX.236.433
+
+Wickham, H., & Grolemund, G. (2017). *R for data science: Import, tidy, transform, visualize, and model*. O'Reilly Media. https://r4ds.hadley.nz/
+
+## Recursos digitales
+
+- R Project: https://www.r-project.org/
+- ggplot2: https://ggplot2.tidyverse.org/
+- Quarto: https://quarto.org/
+- An Introduction to Statistical Learning: https://www.statlearning.com/
+- Google Machine Learning Crash Course:
+
+https://developers.google.com/machine-learning/crash-course
+
+
+Los datos del laboratorio son simulados y se utilizan exclusivamente con fines didácticos. Para una aplicación institucional deben sustituirse por datos autorizados, documentando su origen, tratamiento, calidad y limitaciones.
