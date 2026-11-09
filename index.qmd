@@ -1,5 +1,5 @@
 ---
-title: "Inteligencia artificial_Big Data y aprendizaje supervisado"
+title: "IA_Big Data y aprendizaje supervisado"
 subtitle: "Unidad 1. Fundamentos conceptuales y modelos de predicción"
 author: 
   - name: Dagoberto Salgado Horta
