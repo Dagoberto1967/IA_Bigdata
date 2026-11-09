@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dagoberto Salgado Horta">
+
+<title>Inteligencia artificial_Big Data y aprendizaje supervisado</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #98b6ed;
+      }
+</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Inteligencia artificial_Big Data y aprendizaje supervisado</h1>
+            <p class="subtitle lead">Unidad 1. Fundamentos conceptuales y modelos de predicción</p>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author column-page-left">
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-heading">Afiliación</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author">Dagoberto Salgado Horta </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://www.esap.edu.co/">
+              Escuela Superior de Administración Pública
+              </a>
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta column-page-left">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Fecha de publicación</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">9 de noviembre de 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#cargar-paquetes" id="toc-cargar-paquetes" class="nav-link active" data-scroll-target="#cargar-paquetes"><span class="header-section-number">1</span> .Cargar paquetes</a></li>
+  <li><a href="#presentación-de-la-unidad" id="toc-presentación-de-la-unidad" class="nav-link" data-scroll-target="#presentación-de-la-unidad"><span class="header-section-number">2</span> .Presentación de la unidad</a></li>
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general"><span class="header-section-number">3</span> .Objetivo general</a></li>
+  <li><a href="#conceptos-esenciales-de-ia-y-big-data" id="toc-conceptos-esenciales-de-ia-y-big-data" class="nav-link" data-scroll-target="#conceptos-esenciales-de-ia-y-big-data"><span class="header-section-number">4</span> .Conceptos esenciales de IA y Big Data</a></li>
+  <li><a href="#big-data" id="toc-big-data" class="nav-link" data-scroll-target="#big-data"><span class="header-section-number">5</span> .Big Data</a></li>
+  <li><a href="#ciencia-de-datos" id="toc-ciencia-de-datos" class="nav-link" data-scroll-target="#ciencia-de-datos"><span class="header-section-number">6</span> .Ciencia de datos</a></li>
+  <li><a href="#laboratorio-práctico-en-r" id="toc-laboratorio-práctico-en-r" class="nav-link" data-scroll-target="#laboratorio-práctico-en-r"><span class="header-section-number">7</span> .Laboratorio práctico en R</a></li>
+  <li><a href="#evaluación-conceptual-y-ejercicios-resueltos" id="toc-evaluación-conceptual-y-ejercicios-resueltos" class="nav-link" data-scroll-target="#evaluación-conceptual-y-ejercicios-resueltos"><span class="header-section-number">8</span> .Evaluación conceptual y ejercicios resueltos</a></li>
+  <li><a href="#taller-de-aplicación" id="toc-taller-de-aplicación" class="nav-link" data-scroll-target="#taller-de-aplicación"><span class="header-section-number">9</span> .Taller de aplicación</a></li>
+  <li><a href="#solucionario-orientador-del-taller" id="toc-solucionario-orientador-del-taller" class="nav-link" data-scroll-target="#solucionario-orientador-del-taller"><span class="header-section-number">10</span> .Solucionario orientador del taller</a></li>
+  <li><a href="#síntesis-de-la-unidad" id="toc-síntesis-de-la-unidad" class="nav-link" data-scroll-target="#síntesis-de-la-unidad"><span class="header-section-number">11</span> .Síntesis de la unidad</a></li>
+  <li><a href="#glosario" id="toc-glosario" class="nav-link" data-scroll-target="#glosario"><span class="header-section-number">12</span> .Glosario</a></li>
+  <li><a href="#referencias-bibliográficas" id="toc-referencias-bibliográficas" class="nav-link" data-scroll-target="#referencias-bibliográficas"><span class="header-section-number">13</span> .Referencias bibliográficas</a>
+  <ul class="collapse">
+  <li><a href="#recursos-digitales" id="toc-recursos-digitales" class="nav-link" data-scroll-target="#recursos-digitales"><span class="header-section-number">13.1</span> Recursos digitales</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+
+<div style="position:absolute; top:10px; right:10px;">
+<img src="Logo_esap.png" width="150">
+</div>
+<style>
+body{
+  background-color:#f7f6ed;
+  font-size:130%;
+  text-align:justify;
+}
+</style>
+<section id="cargar-paquetes" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> .Cargar paquetes</h1>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ipak <span class="ot">&lt;-</span> <span class="cf">function</span>(pkg){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">CRAN=</span><span class="st">"https://cloud.r-project.org"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  new.pkg <span class="ot">&lt;-</span> pkg[<span class="sc">!</span>(pkg <span class="sc">%in%</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>()))]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(new.pkg)) <span class="fu">install.packages</span>(new.pkg, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="fu">lapply</span>(pkg, <span class="cf">function</span>(p)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(p, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>,<span class="st">"kableExtra"</span>,<span class="st">"psych"</span>,<span class="st">"readxl"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ipak</span>(packages)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="presentación-de-la-unidad" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> .Presentación de la unidad</h1>
+<p>La inteligencia artificial (IA), el Big Data y el aprendizaje automático están transformando la forma en que las organizaciones producen información, reconocen patrones y toman decisiones. En la administración pública, estas herramientas pueden apoyar la planeación, la asignación de recursos, la evaluación de programas y la prestación de servicios a la ciudadanía.</p>
+<p>Este módulo presenta dos componentes. El primero desarrolla los conceptos esenciales de computación, Big Data, ciencia de datos, inteligencia artificial y aprendizaje automático, así como la relación entre estadística y modelos predictivos. El segundo introduce el aprendizaje supervisado, explica su lógica de predicción, distingue los tipos de datos y desarrolla procedimientos básicos de entrenamiento y evaluación mediante R.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Principio orientador:</strong> un modelo predictivo no reemplaza el juicio profesional ni la responsabilidad institucional. Sus resultados dependen de la calidad de los datos, de los supuestos, del diseño de evaluación y del contexto en el que se utiliza.</p>
+</div>
+</div>
+</section>
+<section id="objetivo-general" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> .Objetivo general</h1>
+<p>Comprender los fundamentos conceptuales de la inteligencia artificial, el Big Data y el aprendizaje supervisado, identificando el papel de la estadística y aplicando procedimientos introductorios de preparación, entrenamiento y evaluación de modelos predictivos en R.</p>
+<p><strong>Resultados de aprendizaje</strong></p>
+<p>Al finalizar esta unidad, el estudiante estará en capacidad de:</p>
+<ol type="1">
+<li>Explicar hitos relevantes de la evolución de la computación y de la inteligencia artificial.</li>
+<li>Diferenciar computación, Big Data, ciencia de datos, inteligencia artificial y aprendizaje automático.</li>
+<li>Describir las dimensiones del Big Data y reconocer diferentes tipos de datos.</li>
+<li>Explicar la relación entre estadística, IA y modelos predictivos.</li>
+<li>Diferenciar problemas de regresión y clasificación.</li>
+<li>Identificar variables predictoras y variables objetivo en un problema supervisado.</li>
+<li>Describir las etapas de entrenamiento, validación y prueba de un modelo.</li>
+<li>Ajustar modelos introductorios de regresión y clasificación en R.</li>
+<li>Interpretar métricas básicas de desempeño y reconocer limitaciones de los modelos.</li>
+</ol>
+<p><strong>Mapa de contenidos</strong></p>
+<ul>
+<li><strong>1.1. Conceptos esenciales de IA y Big Data</strong>
+<ul>
+<li>Historia y conceptos básicos de computación.</li>
+<li>Big Data, ciencia de datos y aprendizaje automático.</li>
+<li>Relación entre IA, estadística y modelos predictivos.</li>
+</ul></li>
+<li><strong>1.2. Aprendizaje supervisado: fundamentos</strong>
+<ul>
+<li>Concepto y lógica de predicción.</li>
+<li>Regresión y clasificación.</li>
+<li>Tipos de datos y preparación.</li>
+<li>Entrenamiento, validación y prueba.</li>
+<li>Evaluación básica de modelos.</li>
+</ul></li>
+</ul>
+</section>
+<section id="conceptos-esenciales-de-ia-y-big-data" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> .Conceptos esenciales de IA y Big Data</h1>
+<p><strong>Historia y conceptos básicos de computación</strong></p>
+<p><strong>¿Qué es la computación?</strong></p>
+<p>La computación es el campo que estudia los métodos y sistemas para representar, almacenar, procesar y comunicar información mediante procedimientos algorítmicos. Incluye los fundamentos teóricos del cálculo, el diseño de hardware y software, las bases de datos, las redes y los sistemas de información.</p>
+<p>Un <strong>algoritmo</strong> es una secuencia finita, ordenada y precisa de instrucciones que permite resolver un problema o realizar una tarea.</p>
+<p>De forma general, un algoritmo recibe datos de entrada, ejecuta un conjunto de operaciones y produce una salida:</p>
+<p><span class="math display">
+\text{Entrada}\longrightarrow\text{Procesamiento}\longrightarrow\text{Salida}
+</span></p>
+<p>Por ejemplo, el cálculo de la media aritmética de <span class="math inline">n</span> observaciones se expresa como:</p>
+<p><span class="math display">
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+</span></p>
+<p>En este caso, los datos de entrada son <span class="math inline">x_1,x_2,\ldots,x_n</span>, el procesamiento consiste en sumar las observaciones y dividir el resultado entre <span class="math inline">n</span>, y la salida es la media.</p>
+<p><strong>Componentes de un sistema computacional</strong></p>
+<ul>
+<li><strong>Hardware:</strong> componentes físicos, como procesador, memoria, disco y dispositivos periféricos.</li>
+<li><strong>Software:</strong> programas e instrucciones que permiten ejecutar tareas.</li>
+<li><strong>Datos:</strong> representaciones de hechos, mediciones, registros o acontecimientos.</li>
+<li><strong>Redes:</strong> infraestructura que permite intercambiar información entre dispositivos.</li>
+<li><strong>Usuarios y procesos:</strong> personas y procedimientos que utilizan los sistemas para cumplir objetivos.</li>
+</ul>
+<p><strong>Datos, información y conocimiento</strong></p>
+<p>Es importante diferenciar estos tres conceptos:</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concepto</th>
+<th>Definición</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dato</td>
+<td>Registro elemental de una característica</td>
+<td>450 solicitudes recibidas</td>
+</tr>
+<tr class="even">
+<td>Información</td>
+<td>Datos organizados y contextualizados</td>
+<td>300 de 450 solicitudes fueron atendidas</td>
+</tr>
+<tr class="odd">
+<td>Conocimiento</td>
+<td>Interpretación que orienta una acción</td>
+<td>Se requiere mejorar la capacidad de atención</td>
+</tr>
+</tbody>
+</table>
+<p>En una entidad pública, el registro de trámites es un conjunto de datos. Al calcular porcentajes de atención y tiempos promedio se obtiene información. Al interpretar estos resultados y proponer cambios operativos se genera conocimiento aplicado.</p>
+<p><strong>Evolución histórica de la computación y la IA</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Periodo</th>
+<th>Hito</th>
+<th>Aporte</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Décadas de 1940 y 1950</td>
+<td>Computadoras electrónicas</td>
+<td>Automatización del cálculo y procesamiento de datos</td>
+</tr>
+<tr class="even">
+<td>1950</td>
+<td>Trabajo de Alan Turing sobre máquinas e inteligencia</td>
+<td>Formulación de preguntas sobre la inteligencia de las máquinas</td>
+</tr>
+<tr class="odd">
+<td>1956</td>
+<td>Taller de Dartmouth</td>
+<td>Consolidación de la inteligencia artificial como campo de investigación</td>
+</tr>
+<tr class="even">
+<td>Décadas de 1960 a 1980</td>
+<td>IA simbólica y sistemas expertos</td>
+<td>Uso de reglas y conocimiento explícito</td>
+</tr>
+<tr class="odd">
+<td>Décadas de 1990 y 2000</td>
+<td>Minería de datos e internet</td>
+<td>Crecimiento de datos digitales y análisis automatizado</td>
+</tr>
+<tr class="even">
+<td>Década de 2010</td>
+<td>Aprendizaje profundo</td>
+<td>Avances en imágenes, voz y lenguaje</td>
+</tr>
+<tr class="odd">
+<td>Década de 2020</td>
+<td>IA generativa</td>
+<td>Producción de texto, imágenes, audio y código</td>
+</tr>
+</tbody>
+</table>
+<p>La evolución de la IA no ha sido lineal. Los enfoques simbólicos, probabilísticos y basados en aprendizaje automático continúan coexistiendo.</p>
+</section>
+<section id="big-data" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> .Big Data</h1>
+<p><strong>Definición</strong></p>
+<p>Big Data se refiere a conjuntos de datos cuyo volumen, velocidad, diversidad o complejidad hacen necesario utilizar tecnologías y procedimientos especializados para su captura, almacenamiento, procesamiento y análisis.</p>
+<p>No existe un único tamaño que determine cuándo un conjunto de datos es Big Data. La dificultad depende de la infraestructura, la velocidad de generación, los formatos y los objetivos del análisis.</p>
+<p><strong>Las cinco dimensiones del Big Data</strong></p>
+<p>Las dimensiones más conocidas son las <strong>5 V</strong>:</p>
+<ol type="1">
+<li><strong>Volumen:</strong> cantidad de datos que se generan y almacenan.</li>
+<li><strong>Velocidad:</strong> rapidez con la que los datos se producen, reciben y procesan.</li>
+<li><strong>Variedad:</strong> diversidad de fuentes y formatos.</li>
+<li><strong>Veracidad:</strong> calidad, consistencia, precisión y confiabilidad.</li>
+<li><strong>Valor:</strong> utilidad que se obtiene al transformar los datos en conocimiento para tomar decisiones.</li>
+</ol>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimensión</th>
+<th>Pregunta</th>
+<th>Ejemplo en administración pública</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Volumen</td>
+<td>¿Cuántos datos existen?</td>
+<td>Millones de registros de trámites</td>
+</tr>
+<tr class="even">
+<td>Velocidad</td>
+<td>¿Con qué rapidez llegan?</td>
+<td>Sensores de movilidad en tiempo real</td>
+</tr>
+<tr class="odd">
+<td>Variedad</td>
+<td>¿Qué formatos tienen?</td>
+<td>Tablas, textos, imágenes y audio</td>
+</tr>
+<tr class="even">
+<td>Veracidad</td>
+<td>¿Son confiables?</td>
+<td>Registros duplicados o incompletos</td>
+</tr>
+<tr class="odd">
+<td>Valor</td>
+<td>¿Qué decisión apoyan?</td>
+<td>Distribución de personal según demanda</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Las 5 V constituyen un marco introductorio. En algunos enfoques se agregan otras dimensiones, como variabilidad, visualización y vulnerabilidad.</p>
+</div>
+</div>
+<p><strong>Tipos de datos según su estructura</strong></p>
+<p><strong>Datos estructurados:</strong> organizados en filas y columnas con un esquema definido. Ejemplo: una base de datos de trámites con fecha, tipo de solicitud y estado.</p>
+<p><strong>Datos semiestructurados:</strong> presentan etiquetas o una organización flexible. Ejemplos: archivos JSON y XML.</p>
+<p><strong>Datos no estructurados:</strong> no siguen una estructura tabular predefinida. Ejemplos: fotografías, videos, grabaciones y documentos de texto libre.</p>
+<p><strong>Tecnologías relacionadas</strong></p>
+<p>En proyectos de Big Data pueden utilizarse sistemas de almacenamiento distribuido, procesamiento paralelo, motores de consulta y servicios de nube. Herramientas como Hadoop y Apache Spark permiten procesar datos a gran escala.</p>
+<p>Sin embargo, no todos los problemas requieren infraestructura Big Data. Para conjuntos pequeños o medianos, R, Python, hojas de cálculo o bases de datos relacionales pueden ser suficientes.</p>
+</section>
+<section id="ciencia-de-datos" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> .Ciencia de datos</h1>
+<p>La ciencia de datos es un campo interdisciplinario que integra estadística, matemáticas, programación, conocimiento del contexto y comunicación para extraer información útil de los datos.</p>
+<p>Su propósito no se limita a construir algoritmos. Incluye formular preguntas, obtener datos, evaluar su calidad, analizarlos, comunicar resultados y apoyar decisiones.</p>
+<p><strong>Disciplinas que la integran</strong></p>
+<ul>
+<li><strong>Estadística:</strong> descripción, inferencia, probabilidad, diseño de estudios y modelación.</li>
+<li><strong>Matemáticas:</strong> álgebra lineal, cálculo, optimización y métodos numéricos.</li>
+<li><strong>Computación:</strong> programación, algoritmos, bases de datos e infraestructura.</li>
+<li><strong>Conocimiento del dominio:</strong> comprensión del problema institucional o social.</li>
+<li><strong>Comunicación:</strong> visualización, interpretación y presentación de resultados.</li>
+</ul>
+<p><strong>Ciclo de vida de un proyecto de ciencia de datos</strong></p>
+<ol type="1">
+<li>Definir el problema y la pregunta de análisis.</li>
+<li>Identificar y obtener los datos.</li>
+<li>Revisar calidad, consistencia y pertinencia.</li>
+<li>Limpiar y transformar la información.</li>
+<li>Explorar los datos mediante estadísticas y gráficos.</li>
+<li>Construir modelos cuando el problema lo requiera.</li>
+<li>Evaluar resultados y limitaciones.</li>
+<li>Comunicar hallazgos y apoyar decisiones.</li>
+<li>Monitorear el desempeño si el modelo se implementa.</li>
+</ol>
+<p><span class="math display">
+\text{Problema}\rightarrow\text{Datos}\rightarrow\text{Preparación}
+\rightarrow\text{Exploración}\rightarrow\text{Modelo}
+\rightarrow\text{Evaluación}\rightarrow\text{Decisión}
+</span></p>
+<p>El ciclo es iterativo: los resultados pueden llevar a redefinir el problema o mejorar la preparación de los datos.</p>
+<p><strong>Tipos de análisis de datos</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Pregunta central</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Descriptivo</td>
+<td>¿Qué ocurrió?</td>
+<td>¿Cuántos trámites se atendieron?</td>
+</tr>
+<tr class="even">
+<td>Diagnóstico</td>
+<td>¿Por qué ocurrió?</td>
+<td>¿Qué factores se relacionan con las demoras?</td>
+</tr>
+<tr class="odd">
+<td>Predictivo</td>
+<td>¿Qué podría ocurrir?</td>
+<td>¿Cuántas solicitudes se recibirán?</td>
+</tr>
+<tr class="even">
+<td>Prescriptivo</td>
+<td>¿Qué conviene hacer?</td>
+<td>¿Cómo distribuir el personal disponible?</td>
+</tr>
+</tbody>
+</table>
+<p>La predicción no demuestra causalidad. Un modelo puede anticipar un resultado sin identificar qué intervención produciría un cambio.</p>
+<p><strong>Inteligencia artificial y aprendizaje automático</strong></p>
+<p><strong>Inteligencia artificial</strong></p>
+<p>La inteligencia artificial es un campo de la informática que desarrolla sistemas capaces de realizar tareas asociadas con capacidades como reconocimiento de patrones, comprensión del lenguaje, planificación, generación de contenidos y apoyo a decisiones.</p>
+<p>La IA comprende diferentes enfoques:</p>
+<ul>
+<li><strong>IA simbólica:</strong> utiliza reglas, lógica y representaciones explícitas del conocimiento.</li>
+<li><strong>IA basada en datos:</strong> aprende patrones a partir de observaciones.</li>
+<li><strong>IA generativa:</strong> produce nuevos contenidos, como texto, imágenes, audio o código.</li>
+</ul>
+<p><strong>Aprendizaje automático (<em>Machine Learning</em>)</strong></p>
+<p>El aprendizaje automático es una rama de la IA que desarrolla algoritmos capaces de aprender patrones a partir de datos y utilizarlos para clasificar, estimar o predecir resultados.</p>
+<p>En lugar de programar todas las reglas de forma explícita, se proporciona al algoritmo un conjunto de ejemplos para que ajuste una función o estructura matemática.</p>
+<p><strong>Aprendizaje profundo (<em>Deep Learning</em>)</strong></p>
+<p>Es una familia de métodos de aprendizaje automático basada en redes neuronales con múltiples capas. Se utiliza en reconocimiento de imágenes, procesamiento del lenguaje, voz y otras tareas complejas.</p>
+<p>La relación conceptual se representa de manera simplificada como:</p>
+<p><span class="math display">
+\text{IA}\supset\text{Aprendizaje automático}
+\supset\text{Aprendizaje profundo}
+</span></p>
+<p>No toda IA utiliza aprendizaje automático y no todo aprendizaje automático utiliza redes neuronales profundas.</p>
+<p><strong>Relación entre IA, estadística y modelos predictivos</strong></p>
+<p>La estadística proporciona fundamentos para describir datos, estimar parámetros, cuantificar incertidumbre, contrastar hipótesis y evaluar modelos. El aprendizaje automático comparte estos fundamentos y los combina con algoritmos computacionales y procedimientos de optimización.</p>
+<p>La estadística y el aprendizaje automático no son disciplinas opuestas. La regresión lineal, por ejemplo, puede utilizarse tanto para explicar relaciones como para predecir valores.</p>
+<p><strong>Diferencias de énfasis</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspecto</th>
+<th>Estadística inferencial</th>
+<th>Aprendizaje automático</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Propósito frecuente</td>
+<td>Explicar, estimar e inferir</td>
+<td>Predecir y generalizar</td>
+</tr>
+<tr class="even">
+<td>Pregunta</td>
+<td>¿Qué relación existe y con qué incertidumbre?</td>
+<td>¿Qué resultado se espera para nuevos casos?</td>
+</tr>
+<tr class="odd">
+<td>Métodos</td>
+<td>Regresión, ANOVA, pruebas de hipótesis</td>
+<td>Árboles, bosques, máquinas de soporte vectorial y redes neuronales</td>
+</tr>
+<tr class="even">
+<td>Evaluación</td>
+<td>Supuestos, estimaciones e intervalos</td>
+<td>Desempeño en datos no utilizados en el entrenamiento</td>
+</tr>
+<tr class="odd">
+<td>Interpretación</td>
+<td>Suele ser central</td>
+<td>Depende del algoritmo y de la aplicación</td>
+</tr>
+</tbody>
+</table>
+<p>Estas diferencias son orientativas: los métodos y objetivos se superponen.</p>
+<p><strong>Aprendizaje supervisado: fundamentos</strong></p>
+<p><strong>Concepto de aprendizaje supervisado</strong></p>
+<p>El aprendizaje supervisado es un enfoque de aprendizaje automático en el que un algoritmo aprende a partir de datos que contienen ejemplos de entrada y una respuesta conocida. El objetivo es encontrar una función que relacione las variables predictoras con la variable objetivo y que pueda utilizarse para estimar respuestas en casos nuevos.</p>
+<p>Se dispone de un conjunto de entrenamiento:</p>
+<p><span class="math display">
+\mathcal{D}=\{(x_i,y_i):i=1,2,\ldots,n\}
+</span></p>
+<p>Donde:</p>
+<ul>
+<li><span class="math inline">x_i</span> representa el conjunto de características o variables predictoras de la observación <span class="math inline">i</span>.</li>
+<li><span class="math inline">y_i</span> representa la respuesta conocida.</li>
+<li><span class="math inline">n</span> es el número de observaciones.</li>
+</ul>
+<p>El algoritmo busca una función <span class="math inline">f</span> que permita aproximar la respuesta:</p>
+<p><span class="math display">
+\widehat{y}=f(x)
+</span></p>
+<p>La función se ajusta utilizando los ejemplos disponibles y luego se aplica a observaciones para las cuales la respuesta todavía no se conoce.</p>
+<p><strong>Ejemplo en administración pública</strong></p>
+<p>Una secretaría de educación dispone de registros históricos de estudiantes con información sobre asistencia, edad, resultados académicos y una variable que indica si el estudiante desertó.</p>
+<p>El objetivo puede ser estimar la probabilidad de deserción de nuevos estudiantes para orientar acciones de acompañamiento. La predicción debe utilizarse como apoyo y no como una etiqueta definitiva sobre una persona.</p>
+<p><strong>Lógica de predicción</strong></p>
+<p>El aprendizaje supervisado sigue, de manera general, esta secuencia:</p>
+<ol type="1">
+<li>Se define una variable objetivo que se desea estimar.</li>
+<li>Se identifican las variables predictoras disponibles en el momento de la predicción.</li>
+<li>Se recolectan observaciones históricas con respuestas conocidas.</li>
+<li>Se preparan los datos y se separan en conjuntos.</li>
+<li>Se entrena el algoritmo.</li>
+<li>Se generan predicciones sobre datos nuevos.</li>
+<li>Se comparan las predicciones con los resultados reales.</li>
+<li>Se evalúa si el desempeño es suficiente para el propósito definido.</li>
+</ol>
+<p><span class="math display">
+\text{Datos etiquetados}\rightarrow\text{Entrenamiento}
+\rightarrow\text{Modelo ajustado}\rightarrow\text{Predicción}
+\rightarrow\text{Evaluación}
+</span></p>
+<p><strong>Variables predictoras y variable objetivo</strong></p>
+<ul>
+<li><strong>Variables predictoras (X):</strong> características utilizadas para estimar el resultado.</li>
+<li><strong>Variable objetivo o respuesta (Y):</strong> resultado que se desea predecir.</li>
+</ul>
+<p>Ejemplo:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Asistencia (%)</th>
+<th style="text-align: right;">Promedio académico</th>
+<th>Deserción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">4.2</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">2.8</td>
+<td>Sí</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">3.9</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">2.5</td>
+<td>Sí</td>
+</tr>
+</tbody>
+</table>
+<p>En este ejemplo, asistencia y promedio académico son predictores, mientras que deserción es la variable objetivo.</p>
+<p><strong>Tipos de problemas supervisados</strong></p>
+<p>Los problemas supervisados se dividen principalmente en regresión y clasificación.</p>
+<p><strong>A. Regresión</strong></p>
+<p>Se utiliza cuando la variable objetivo es cuantitativa.</p>
+<p>Ejemplos:</p>
+<ul>
+<li>Predecir el tiempo de atención de un trámite.</li>
+<li>Estimar el gasto mensual de un programa.</li>
+<li>Proyectar el número de solicitudes.</li>
+<li>Estimar la demanda de servicios públicos.</li>
+</ul>
+<p>Un modelo de regresión produce un valor numérico:</p>
+<p><span class="math display">
+\widehat{Y}=f(X_1,X_2,\ldots,X_p)
+</span></p>
+<p><strong>B. Clasificación</strong></p>
+<p>Se utiliza cuando la variable objetivo es categórica.</p>
+<p>Ejemplos:</p>
+<ul>
+<li>Clasificar solicitudes como prioritarias o no prioritarias.</li>
+<li>Identificar registros con posible anomalía.</li>
+<li>Clasificar estudiantes según una categoría de riesgo.</li>
+<li>Determinar si un trámite puede superar el plazo establecido.</li>
+</ul>
+<p>En clasificación binaria, la respuesta puede tomar dos categorías, por ejemplo:</p>
+<p><span class="math display">
+Y\in\{0,1\}
+</span></p>
+<p>Un modelo puede estimar una probabilidad:</p>
+<p><span class="math display">
+\widehat{p}(X)=P(Y=1\mid X)
+</span></p>
+<p>Luego, mediante un umbral de decisión, se asigna una clase. Por ejemplo, si el umbral es 0.5:</p>
+<p><span class="math display">
+\widehat{Y}=
+\begin{cases}
+1 &amp; \text{si }\widehat{p}(X)\geq 0.5\\
+0 &amp; \text{si }\widehat{p}(X)&lt;0.5
+\end{cases}
+</span></p>
+<p>El umbral no tiene que ser siempre 0.5. Debe elegirse de acuerdo con los costos de los falsos positivos y falsos negativos y con el propósito institucional.</p>
+<p><strong>Comparación entre regresión y clasificación</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Característica</th>
+<th>Regresión</th>
+<th>Clasificación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Variable objetivo</td>
+<td>Cuantitativa</td>
+<td>Categórica</td>
+</tr>
+<tr class="even">
+<td>Resultado</td>
+<td>Valor numérico</td>
+<td>Clase o probabilidad por clase</td>
+</tr>
+<tr class="odd">
+<td>Ejemplo</td>
+<td>Tiempo de atención</td>
+<td>Trámite oportuno/no oportuno</td>
+</tr>
+<tr class="even">
+<td>Métricas</td>
+<td>MAE, RMSE, <span class="math inline">R^2</span></td>
+<td>Exactitud, precisión, sensibilidad, F1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tipos de datos y variables</strong></p>
+<p>La elección del modelo depende, entre otros aspectos, del tipo de variables disponibles.</p>
+<p><strong>Según su naturaleza</strong></p>
+<p><strong>Variables cualitativas nominales:</strong> categorías sin orden natural. Ejemplo: tipo de trámite, municipio o dependencia.</p>
+<p><strong>Variables cualitativas ordinales:</strong> categorías con orden. Ejemplo: nivel bajo, medio y alto.</p>
+<p><strong>Variables cuantitativas discretas:</strong> conteos. Ejemplo: número de solicitudes.</p>
+<p><strong>Variables cuantitativas continuas:</strong> mediciones que pueden tomar valores en un intervalo. Ejemplo: tiempo de atención o ingreso.</p>
+<p><strong>Según su función en el modelo</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Función</th>
+<th>Descripción</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Predictora</td>
+<td>Variable usada para estimar</td>
+<td>Número de solicitudes</td>
+</tr>
+<tr class="even">
+<td>Objetivo</td>
+<td>Resultado que se desea predecir</td>
+<td>Tiempo de atención</td>
+</tr>
+<tr class="odd">
+<td>Identificador</td>
+<td>Código para reconocer un registro</td>
+<td>Código de trámite</td>
+</tr>
+<tr class="even">
+<td>Fecha o tiempo</td>
+<td>Orden temporal de observaciones</td>
+<td>Fecha de recepción</td>
+</tr>
+</tbody>
+</table>
+<p>Los identificadores no deben incorporarse automáticamente como predictores: pueden permitir que el algoritmo memorice patrones sin significado generalizable. Las fechas pueden ser útiles, pero deben transformarse con criterio y respetar el orden temporal.</p>
+<p><strong>Codificación de variables categóricas</strong></p>
+<p>Muchos algoritmos requieren que las categorías se representen numéricamente. Una opción es la codificación <em>one-hot</em>, que crea indicadores binarios para las categorías.</p>
+<p>Por ejemplo, para la variable <code>modalidad</code>:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Modalidad</th>
+<th style="text-align: right;">Presencial</th>
+<th style="text-align: right;">Virtual</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Presencial</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>Virtual</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p>En R, los modelos lineales pueden gestionar variables categóricas cuando están definidas como factores.</p>
+<p><strong>Preparación de los datos</strong></p>
+<p>La preparación es una etapa fundamental. Algunas tareas frecuentes son:</p>
+<ul>
+<li>Revisar valores faltantes.</li>
+<li>Identificar duplicados.</li>
+<li>Corregir errores de digitación.</li>
+<li>Verificar unidades y rangos válidos.</li>
+<li>Transformar variables categóricas.</li>
+<li>Examinar valores extremos.</li>
+<li>Evitar que información posterior al resultado se filtre en los predictores.</li>
+<li>Documentar las decisiones de limpieza.</li>
+</ul>
+<p>La preparación debe realizarse respetando la estructura del problema. En una predicción temporal, por ejemplo, no se deben utilizar observaciones futuras para predecir el pasado.</p>
+<p><strong>Fuga de información (<em>data leakage</em>)</strong></p>
+<p>Se presenta cuando el modelo utiliza información que no estaría disponible en el momento real de la predicción o cuando el conjunto de prueba influye en el entrenamiento.</p>
+<p>La fuga de información produce evaluaciones artificialmente optimistas. Para evitarla, las transformaciones que aprenden parámetros de los datos —como imputación, escalamiento o selección de variables— deben ajustarse con el conjunto de entrenamiento y luego aplicarse al conjunto de prueba.</p>
+<p><strong>Entrenamiento, validación y prueba</strong></p>
+<p>Los datos suelen dividirse en tres conjuntos:</p>
+<ul>
+<li><strong>Entrenamiento:</strong> se utiliza para ajustar los parámetros del modelo.</li>
+<li><strong>Validación:</strong> se utiliza para comparar modelos o seleccionar hiperparámetros.</li>
+<li><strong>Prueba:</strong> se reserva para la evaluación final del procedimiento elegido.</li>
+</ul>
+<p>Una división introductoria frecuente es 70 % para entrenamiento y 30 % para prueba. En estudios más rigurosos puede utilizarse validación cruzada o una separación adicional para validación.</p>
+<p><span class="math display">
+D=D_{\text{entrenamiento}}\cup D_{\text{validación}}
+\cup D_{\text{prueba}}
+</span></p>
+<p>Los conjuntos deben ser independientes en el sentido requerido por el diseño. En datos temporales se debe respetar el orden cronológico y no realizar una división aleatoria que mezcle futuro y pasado.</p>
+<p><strong>Sobreajuste y subajuste</strong></p>
+<p><strong>Sobreajuste (<em>overfitting</em>):</strong> el modelo se adapta demasiado a los detalles del conjunto de entrenamiento y presenta bajo desempeño en datos nuevos.</p>
+<p><strong>Subajuste (<em>underfitting</em>):</strong> el modelo es demasiado simple para representar adecuadamente el patrón de los datos.</p>
+<p>La evaluación con datos separados, la validación cruzada, la regularización y la selección cuidadosa de variables ayudan a controlar estos problemas.</p>
+</section>
+<section id="laboratorio-práctico-en-r" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> .Laboratorio práctico en R</h1>
+<p>Los ejemplos utilizan datos sintéticos. No corresponden a personas ni a registros reales de una entidad. Se emplea <code>ggplot2</code> para las visualizaciones y funciones incluidas en R para ajustar y evaluar modelos.</p>
+<p><strong>Preparación del entorno</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar una sola vez, si es necesario:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Ejemplo A: regresión supervisada</strong></p>
+<p><strong>Contexto</strong></p>
+<p>Una oficina pública desea estimar el tiempo promedio de atención a partir del número diario de solicitudes recibidas.</p>
+<p><strong>Generación de datos</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">150</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>datos_reg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dia =</span> <span class="dv">1</span><span class="sc">:</span>n,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">solicitudes =</span> <span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">80</span>, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>datos_reg<span class="sc">$</span>tiempo <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.75</span> <span class="sc">*</span> datos_reg<span class="sc">$</span>solicitudes <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">4</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos_reg)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  dia solicitudes   tiempo
+1   1          47 37.43029
+2   2          54 51.76637
+3   3          45 41.25184
+4   4          57 49.65796
+5   5          14 13.87390
+6   6          40 32.70694</code></pre>
+</div>
+</div>
+<p><strong>Exploración gráfica</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_reg, <span class="fu">aes</span>(<span class="at">x =</span> solicitudes, <span class="at">y =</span> tiempo)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Relación entre solicitudes y tiempo de atención"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Datos simulados"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Solicitudes recibidas por día"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Tiempo promedio de atención (minutos)"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Separación de entrenamiento y prueba</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>n_reg <span class="ot">&lt;-</span> <span class="fu">nrow</span>(datos_reg)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>id_train_reg <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seq_len</span>(n_reg),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">floor</span>(<span class="fl">0.70</span> <span class="sc">*</span> n_reg)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>train_reg <span class="ot">&lt;-</span> datos_reg[id_train_reg, ]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>test_reg <span class="ot">&lt;-</span> datos_reg[<span class="sc">-</span>id_train_reg, ]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Entrenamiento del modelo</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>modelo_reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  tiempo <span class="sc">~</span> solicitudes,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> train_reg</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_reg)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = tiempo ~ solicitudes, data = train_reg)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.7319 -2.1595  0.2358  2.6424 10.6229 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.2746     0.8698   6.064 2.21e-08 ***
+solicitudes   0.7593     0.0167  45.463  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.433 on 103 degrees of freedom
+Multiple R-squared:  0.9525,    Adjusted R-squared:  0.9521 
+F-statistic:  2067 on 1 and 103 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>La función <code>lm()</code> ajusta una regresión lineal por mínimos cuadrados. El resultado muestra los coeficientes estimados y diferentes estadísticas del ajuste.</p>
+<p><strong>Predicción y evaluación</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pred_reg <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  modelo_reg,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> test_reg</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(test_reg<span class="sc">$</span>tiempo <span class="sc">-</span> pred_reg))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((test_reg<span class="sc">$</span>tiempo <span class="sc">-</span> pred_reg)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrica =</span> <span class="fu">c</span>(<span class="st">"MAE"</span>, <span class="st">"RMSE"</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">valor =</span> <span class="fu">c</span>(mae, rmse)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  metrica    valor
+1     MAE 3.605700
+2    RMSE 4.201092</code></pre>
+</div>
+</div>
+<p>El MAE resume el error absoluto promedio. El RMSE penaliza con mayor intensidad los errores grandes. Ambos se expresan en minutos.</p>
+<p><strong>Observados frente a predichos</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>comparacion_reg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">observado =</span> test_reg<span class="sc">$</span>tiempo,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">predicho =</span> <span class="fu">as.numeric</span>(pred_reg)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(comparacion_reg, <span class="fu">aes</span>(<span class="at">x =</span> observado, <span class="at">y =</span> predicho)) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">slope =</span> <span class="dv">1</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">intercept =</span> <span class="dv">0</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Regresión: valores observados y predichos"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Tiempo observado (minutos)"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Tiempo predicho (minutos)"</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Los puntos cercanos a la diagonal representan predicciones cercanas a los valores observados.</p>
+<p><strong>Predicción de un nuevo caso</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nuevo_caso <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">solicitudes =</span> <span class="dv">50</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  modelo_reg,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> nuevo_caso,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"prediction"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 43.24092 36.40031 50.08154</code></pre>
+</div>
+</div>
+<p>El intervalo de predicción estima un rango para una observación individual futura bajo los supuestos del modelo. No debe confundirse con el intervalo de confianza para la media.</p>
+<p><strong>Ejemplo B: clasificación supervisada</strong></p>
+<p><strong>Contexto</strong></p>
+<p>Una entidad desea identificar solicitudes que podrían superar el plazo institucional de respuesta. Se genera una base sintética con variables como número de documentos, carga diaria y complejidad del trámite. La variable objetivo indica si la solicitud se retrasó.</p>
+<p>Este ejemplo es exclusivamente pedagógico. Una clasificación de este tipo no debe utilizarse para negar derechos o servicios ni para tomar decisiones automáticas sin revisión institucional.</p>
+<p><strong>Construcción de datos</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>n_clas <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>datos_clas <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">documentos =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, n_clas, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">carga_diaria =</span> <span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">100</span>, n_clas, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">complejidad =</span> <span class="fu">sample</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"Baja"</span>, <span class="st">"Media"</span>, <span class="st">"Alta"</span>),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    n_clas,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.35</span>, <span class="fl">0.40</span>, <span class="fl">0.25</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>datos_clas<span class="sc">$</span>complejidad <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  datos_clas<span class="sc">$</span>complejidad,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Baja"</span>, <span class="st">"Media"</span>, <span class="st">"Alta"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilidad simulada de retraso</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>eta <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">3.2</span> <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.12</span> <span class="sc">*</span> datos_clas<span class="sc">$</span>documentos <span class="sc">+</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.025</span> <span class="sc">*</span> datos_clas<span class="sc">$</span>carga_diaria <span class="sc">+</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(datos_clas<span class="sc">$</span>complejidad <span class="sc">==</span> <span class="st">"Media"</span>, <span class="fl">0.5</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(datos_clas<span class="sc">$</span>complejidad <span class="sc">==</span> <span class="st">"Alta"</span>, <span class="fl">1.1</span>, <span class="dv">0</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>prob_retraso <span class="ot">&lt;-</span> <span class="fu">plogis</span>(eta)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>datos_clas<span class="sc">$</span>retraso <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  n_clas,</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> prob_retraso</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>datos_clas<span class="sc">$</span>retraso <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  datos_clas<span class="sc">$</span>retraso,</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Si"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos_clas)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  documentos carga_diaria complejidad retraso
+1          9           34        Baja      No
+2          1           64       Media      No
+3          6           29       Media      Si
+4         11           63        Baja      No
+5         12           22       Media      No
+6          4           73       Media      No</code></pre>
+</div>
+</div>
+<p><strong>Distribución de la variable objetivo</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_clas, <span class="fu">aes</span>(<span class="at">x =</span> retraso)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribución de solicitudes según retraso"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"¿Presentó retraso?"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Número de solicitudes"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Relación entre carga y retraso</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  datos_clas,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> carga_diaria, <span class="at">fill =</span> retraso)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">15</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">"identity"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.55</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Carga diaria según condición de retraso"</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Carga diaria de solicitudes"</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frecuencia"</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Retraso"</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Separación de entrenamiento y prueba</strong></p>
+<p>Para este ejemplo se utiliza una partición aleatoria. En aplicaciones temporales debe respetarse el orden cronológico.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>n_clas <span class="ot">&lt;-</span> <span class="fu">nrow</span>(datos_clas)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>id_train_clas <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seq_len</span>(n_clas),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">floor</span>(<span class="fl">0.70</span> <span class="sc">*</span> n_clas)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>train_clas <span class="ot">&lt;-</span> datos_clas[id_train_clas, ]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>test_clas <span class="ot">&lt;-</span> datos_clas[<span class="sc">-</span>id_train_clas, ]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Entrenamiento: regresión logística</strong></p>
+<p>La regresión logística es un modelo supervisado utilizado para clasificación binaria. Modela la probabilidad de que ocurra la categoría de interés.</p>
+<p><span class="math display">
+P(Y=1\mid X)=
+\frac{1}{1+\exp[-(\beta_0+\beta_1X_1+\cdots+\beta_pX_p)]}
+</span></p>
+<p>Su transformación logit se expresa como:</p>
+<p><span class="math display">
+\log\left(\frac{p}{1-p}\right)
+=\beta_0+\beta_1X_1+\cdots+\beta_pX_p
+</span></p>
+<p>En R se utiliza <code>glm()</code> con la familia <code>binomial</code>.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>modelo_clas <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  retraso <span class="sc">~</span> documentos <span class="sc">+</span> carga_diaria <span class="sc">+</span> complejidad,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> train_clas,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_clas)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = retraso ~ documentos + carga_diaria + complejidad, 
+    family = binomial, data = train_clas)
+
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)      -2.885924   0.491320  -5.874 4.26e-09 ***
+documentos        0.112894   0.039026   2.893  0.00382 ** 
+carga_diaria      0.022269   0.005494   4.053 5.05e-05 ***
+complejidadMedia  0.232443   0.301786   0.770  0.44117    
+complejidadAlta   1.080742   0.354135   3.052  0.00227 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 370.48  on 279  degrees of freedom
+Residual deviance: 334.92  on 275  degrees of freedom
+AIC: 344.92
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p><strong>Predicción de probabilidades y clases</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>prob_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  modelo_clas,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> test_clas,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"response"</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>umbral <span class="ot">&lt;-</span> <span class="fl">0.50</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>clase_pred <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  prob_pred <span class="sc">&gt;=</span> umbral,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Si"</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"No"</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>clase_pred <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  clase_pred,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"No"</span>, <span class="st">"Si"</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>El umbral de 0.50 es una decisión ilustrativa. En contextos reales debe seleccionarse considerando la finalidad, la prevalencia de la clase y el costo de cada tipo de error.</p>
+<p><strong>Matriz de confusión</strong></p>
+<p>La matriz de confusión compara las clases observadas con las clases predichas.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>matriz <span class="ot">&lt;-</span> <span class="fu">table</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Observado =</span> test_clas<span class="sc">$</span>retraso,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Predicho =</span> clase_pred</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>matriz</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         Predicho
+Observado No Si
+       No 64 11
+       Si 26 19</code></pre>
+</div>
+</div>
+<p>Sus componentes son:</p>
+<ul>
+<li><strong>Verdadero negativo (VN):</strong> el caso no presentó retraso y se predijo que no lo presentaría.</li>
+<li><strong>Falso positivo (FP):</strong> el caso no presentó retraso, pero se predijo retraso.</li>
+<li><strong>Falso negativo (FN):</strong> el caso presentó retraso, pero se predijo que no lo presentaría.</li>
+<li><strong>Verdadero positivo (VP):</strong> el caso presentó retraso y se predijo correctamente.</li>
+</ul>
+<p><strong>Métricas de clasificación</strong></p>
+<p>La exactitud (<em>accuracy</em>) mide la proporción total de clasificaciones correctas:</p>
+<p><span class="math display">
+Accuracy=\frac{VP+VN}{VP+VN+FP+FN}
+</span></p>
+<p>La precisión (<em>precision</em>) mide qué proporción de los casos predichos positivos realmente lo son:</p>
+<p><span class="math display">
+Precision=\frac{VP}{VP+FP}
+</span></p>
+<p>La sensibilidad (<em>recall</em>) mide qué proporción de los positivos reales fue identificada:</p>
+<p><span class="math display">
+Recall=\frac{VP}{VP+FN}
+</span></p>
+<p>La especificidad mide qué proporción de los negativos reales fue identificada:</p>
+<p><span class="math display">
+Especificidad=\frac{VN}{VN+FP}
+</span></p>
+<p>La medida F1 combina precisión y sensibilidad mediante su media armónica:</p>
+<p><span class="math display">
+F1=2\frac{Precision\times Recall}{Precision+Recall}
+</span></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Ver código</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>VN <span class="ot">&lt;-</span> matriz[<span class="st">"No"</span>, <span class="st">"No"</span>]</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>FP <span class="ot">&lt;-</span> matriz[<span class="st">"No"</span>, <span class="st">"Si"</span>]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>FN <span class="ot">&lt;-</span> matriz[<span class="st">"Si"</span>, <span class="st">"No"</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>VP <span class="ot">&lt;-</span> matriz[<span class="st">"Si"</span>, <span class="st">"Si"</span>]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> (VP <span class="sc">+</span> VN) <span class="sc">/</span> <span class="fu">sum</span>(matriz)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>precision <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  VP <span class="sc">+</span> FP <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  VP <span class="sc">/</span> (VP <span class="sc">+</span> FP)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>recall <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  VP <span class="sc">+</span> FN <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  VP <span class="sc">/</span> (VP <span class="sc">+</span> FN)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>specificity <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  VN <span class="sc">+</span> FP <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  VN <span class="sc">/</span> (VN <span class="sc">+</span> FP)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">is.na</span>(precision) <span class="sc">||</span> <span class="fu">is.na</span>(recall) <span class="sc">||</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    precision <span class="sc">+</span> recall <span class="sc">==</span> <span class="dv">0</span>,</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NA</span>,</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> <span class="sc">*</span> precision <span class="sc">*</span> recall <span class="sc">/</span> (precision <span class="sc">+</span> recall)</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>metricas_clas <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrica =</span> <span class="fu">c</span>(</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Exactitud"</span>,</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Precisión"</span>,</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sensibilidad"</span>,</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Especificidad"</span>,</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"F1"</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">valor =</span> <span class="fu">c</span>(</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>    accuracy,</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>    precision,</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>    recall,</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>    specificity,</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>    f1</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>metricas_clas</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        metrica     valor
+1     Exactitud 0.6916667
+2     Precisión 0.6333333
+3  Sensibilidad 0.4222222
+4 Especificidad 0.8533333
+5            F1 0.5066667</code></pre>
+</div>
+</div>
+<p>La exactitud puede ser engañosa cuando las clases están desbalanceadas. Por eso es importante analizar sensibilidad, especificidad, precisión, F1 y, cuando corresponda, curvas ROC y AUC.</p>
+<p><strong>Interpretación de los dos ejemplos</strong></p>
+<p>En regresión, el resultado es un valor numérico, como el tiempo estimado de atención. La evaluación se realiza comparando predicciones y valores observados mediante métricas como MAE y RMSE.</p>
+<p>En clasificación, el modelo estima una probabilidad de pertenecer a una categoría y, según un umbral, asigna una clase. La matriz de confusión permite distinguir aciertos y errores de diferentes tipos.</p>
+<p>No existe una métrica universalmente mejor. La selección depende del objetivo, de la distribución de clases y de las consecuencias de equivocarse.</p>
+</section>
+<section id="evaluación-conceptual-y-ejercicios-resueltos" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> .Evaluación conceptual y ejercicios resueltos</h1>
+<p><strong>Ejercicio resuelto 1: identificar el tipo de aprendizaje</strong></p>
+<p><strong>Enunciado:</strong> una secretaría de educación tiene registros históricos de estudiantes. Para cada estudiante conoce asistencia, promedio académico y si desertó o no. Se desea estimar la deserción de estudiantes nuevos.</p>
+<p><strong>Solución:</strong></p>
+<ol type="1">
+<li>Se conoce la respuesta histórica: desertó o no desertó.</li>
+<li>La variable objetivo es categórica.</li>
+<li>Se utilizan características de cada estudiante para estimar la categoría.</li>
+<li>Por tanto, es un problema de aprendizaje supervisado de clasificación.</li>
+</ol>
+<p><strong>Ejercicio resuelto 2: problema de regresión</strong></p>
+<p><strong>Enunciado:</strong> un modelo estima el tiempo de respuesta a solicitudes mediante:</p>
+<p><span class="math display">
+\widehat{Y}=8+1.2X
+</span></p>
+<p>donde <span class="math inline">X</span> es el número de solicitudes y <span class="math inline">Y</span> el tiempo promedio en minutos.</p>
+<p><strong>a. Calcule el tiempo estimado para 15 solicitudes.</strong></p>
+<p><span class="math display">
+\widehat{Y}=8+1.2(15)=26
+</span></p>
+<p>La predicción es de 26 minutos.</p>
+<p><strong>b. Interprete la pendiente.</strong></p>
+<p>Por cada solicitud adicional, el tiempo promedio estimado aumenta 1.2 minutos, dentro del alcance del modelo.</p>
+<p><strong>c.&nbsp;Interprete el intercepto.</strong></p>
+<p>El valor 8 representa el tiempo estimado cuando <span class="math inline">X=0</span>. Su interpretación práctica depende de si ese escenario tiene sentido en el contexto.</p>
+<p><strong>Ejercicio resuelto 3: métricas de clasificación</strong></p>
+<p><strong>Enunciado:</strong> un modelo clasifica 100 solicitudes. La matriz de confusión es:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Predicho: no retraso</th>
+<th style="text-align: right;">Predicho: retraso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Observado: no retraso</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td>Observado: retraso</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">22</td>
+</tr>
+</tbody>
+</table>
+<p>Por tanto:</p>
+<ul>
+<li><span class="math inline">VN=60</span></li>
+<li><span class="math inline">FP=10</span></li>
+<li><span class="math inline">FN=8</span></li>
+<li><span class="math inline">VP=22</span></li>
+</ul>
+<p><strong>Exactitud:</strong></p>
+<p><span class="math display">
+Accuracy=\frac{60+22}{100}=0.82
+</span></p>
+<p>El 82 % de las solicitudes fue clasificado correctamente.</p>
+<p><strong>Precisión:</strong></p>
+<p><span class="math display">
+Precision=\frac{22}{22+10}=0.6875
+</span></p>
+<p>De las solicitudes clasificadas como retrasadas, el 68.75 % realmente presentó retraso.</p>
+<p><strong>Sensibilidad:</strong></p>
+<p><span class="math display">
+Recall=\frac{22}{22+8}=0.7333
+</span></p>
+<p>El modelo identificó aproximadamente el 73.33 % de las solicitudes que realmente presentaron retraso.</p>
+<p><strong>Especificidad:</strong></p>
+<p><span class="math display">
+Especificidad=\frac{60}{60+10}=0.8571
+</span></p>
+<p>El modelo identificó correctamente aproximadamente el 85.71 % de las solicitudes que no presentaron retraso.</p>
+<p><strong>Medida F1:</strong></p>
+<p><span class="math display">
+F1=2\frac{0.6875(0.7333)}{0.6875+0.7333}
+\approx 0.7097
+</span></p>
+<p>La medida F1 es aproximadamente 0.71.</p>
+</section>
+<section id="taller-de-aplicación" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> .Taller de aplicación</h1>
+<p><strong>Ejercicio 1. Conceptos esenciales</strong></p>
+<p>Una alcaldía almacena registros de trámites, fotografías de infraestructura, grabaciones de llamadas y datos de sensores de movilidad.</p>
+<ol type="a">
+<li><p>Clasifique los datos como estructurados, semiestructurados o no estructurados.</p></li>
+<li><p>Explique tres dimensiones de Big Data presentes en la situación.</p></li>
+<li><p>Proponga una pregunta de investigación que pueda abordarse mediante ciencia de datos.</p></li>
+<li><p>Explique qué información adicional necesitaría antes de construir un modelo predictivo.</p></li>
+</ol>
+<p><strong>Ejercicio 2. Identificación del aprendizaje supervisado</strong></p>
+<p>Una secretaría de educación cuenta con información histórica de estudiantes, incluyendo asistencia, edad, resultados académicos y una variable que indica si el estudiante desertó.</p>
+<ol type="a">
+<li><p>Identifique la variable objetivo.</p></li>
+<li><p>Proponga tres variables predictoras.</p></li>
+<li><p>Determine si se trata de regresión o clasificación.</p></li>
+<li><p>Explique por qué no se debe utilizar información que solo se conoce después de la deserción.</p></li>
+</ol>
+<p><strong>Ejercicio 3. Regresión lineal</strong></p>
+<p>Un modelo de predicción del tiempo de respuesta es:</p>
+<p><span class="math display">
+\widehat{Y}=10+0.9X
+</span></p>
+<p>donde <span class="math inline">X</span> es el número de solicitudes recibidas.</p>
+<ol type="a">
+<li><p>Calcule la predicción para 25 solicitudes.</p></li>
+<li><p>Interprete la pendiente.</p></li>
+<li><p>Interprete el intercepto.</p></li>
+<li><p>Explique por qué una predicción para 300 solicitudes podría ser poco confiable si los datos de entrenamiento solo contienen valores entre 10 y 80.</p></li>
+</ol>
+<p><strong>Ejercicio 4. Interpretación de métricas</strong></p>
+<p>Dos modelos se evalúan sobre el mismo conjunto de prueba:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Modelo</th>
+<th style="text-align: right;">MAE</th>
+<th style="text-align: right;">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">4.1</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td style="text-align: right;">2.7</td>
+<td style="text-align: right;">5.0</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li><p>¿Cuál presenta menor MAE?</p></li>
+<li><p>¿Cuál presenta menor RMSE?</p></li>
+<li><p>Explique por qué las métricas pueden conducir a conclusiones diferentes.</p></li>
+<li><p>¿Qué información adicional revisaría antes de seleccionar un modelo?</p></li>
+</ol>
+<p><strong>Ejercicio 5. Clasificación y matriz de confusión</strong></p>
+<p>Un modelo clasifica 200 solicitudes. Se obtiene:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Predicho: no prioritario</th>
+<th style="text-align: right;">Predicho: prioritario</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Observado: no prioritario</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr class="even">
+<td>Observado: prioritario</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">45</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li><p>Identifique VN, FP, FN y VP.</p></li>
+<li><p>Calcule la exactitud.</p></li>
+<li><p>Calcule la precisión.</p></li>
+<li><p>Calcule la sensibilidad.</p></li>
+<li><p>Explique cuál error podría ser más costoso para la entidad y por qué.</p></li>
+</ol>
+<p><strong>Ejercicio 6. Ética y uso institucional</strong></p>
+<p>Una entidad pública desea utilizar un algoritmo para priorizar visitas de inspección.</p>
+<ol type="a">
+<li><p>Identifique dos riesgos de sesgo.</p></li>
+<li><p>Proponga dos medidas para proteger los datos personales.</p></li>
+<li><p>Explique por qué debe existir supervisión humana.</p></li>
+<li><p>Proponga una estrategia para monitorear diferencias de desempeño entre grupos.</p></li>
+</ol>
+</section>
+<section id="solucionario-orientador-del-taller" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> .Solucionario orientador del taller</h1>
+<p><strong>Ejercicio 1</strong></p>
+<ol type="a">
+<li><p>Los registros tabulares de trámites y sensores pueden ser estructurados; los documentos JSON o XML, semiestructurados; las fotografías y grabaciones, no estructurados.</p></li>
+<li><p>Volumen: cantidad de registros. Variedad: diversidad de formatos. Velocidad: generación continua de datos. También deben considerarse veracidad y valor.</p></li>
+<li><p>Ejemplo: ¿qué zonas presentan mayores tiempos de atención de trámites?</p></li>
+<li><p>Se requiere conocer la finalidad, población, periodo, calidad de datos, variable objetivo, disponibilidad de predictores y restricciones legales.</p></li>
+</ol>
+<p><strong>Ejercicio 2</strong></p>
+<ol type="a">
+<li><p>La variable objetivo es deserción.</p></li>
+<li><p>Asistencia, edad y resultados académicos.</p></li>
+<li><p>Clasificación supervisada, porque la respuesta es categórica.</p></li>
+<li><p>El uso de información futura produce fuga de información y genera una evaluación artificialmente optimista.</p></li>
+</ol>
+<p><strong>Ejercicio 3</strong></p>
+<ol type="a">
+<li></li>
+</ol>
+<p><span class="math display">
+\widehat{Y}=10+0.9(25)=32.5
+</span></p>
+<p>La predicción es de 32.5 unidades de tiempo.</p>
+<ol start="2" type="a">
+<li><p>Por cada solicitud adicional, el tiempo estimado aumenta 0.9 unidades, en promedio.</p></li>
+<li><p>El intercepto representa el valor estimado cuando no se reciben solicitudes. Su interpretación depende del contexto.</p></li>
+<li><p>Se estaría extrapolando fuera del rango observado, por lo que no existe evidencia suficiente para asegurar que la relación se mantenga.</p></li>
+</ol>
+<p><strong>Ejercicio 4</strong></p>
+<ol type="a">
+<li><p>El modelo B tiene menor MAE: 2.7.</p></li>
+<li><p>El modelo A tiene menor RMSE: 4.1.</p></li>
+<li><p>RMSE penaliza más los errores grandes. El modelo B puede presentar menor error absoluto promedio, pero algunos errores grandes que elevan su RMSE.</p></li>
+<li><p>Revisar distribución de errores, valores extremos, estabilidad, desempeño por subgrupos, interpretabilidad y costos de error.</p></li>
+</ol>
+<p><strong>Ejercicio 5</strong></p>
+<ol type="a">
+<li><p><span class="math inline">VN=120</span>, <span class="math inline">FP=20</span>, <span class="math inline">FN=15</span>, <span class="math inline">VP=45</span>.</p></li>
+<li></li>
+</ol>
+<p><span class="math display">
+Accuracy=\frac{120+45}{200}=0.825
+</span></p>
+<p>Exactitud: 82.5 %.</p>
+<ol start="3" type="a">
+<li></li>
+</ol>
+<p><span class="math display">
+Precision=\frac{45}{45+20}=0.6923
+</span></p>
+<p>Precisión: aproximadamente 69.23 %.</p>
+<ol start="4" type="a">
+<li></li>
+</ol>
+<p><span class="math display">
+Recall=\frac{45}{45+15}=0.75
+</span></p>
+<p>Sensibilidad: 75 %.</p>
+<ol start="5" type="a">
+<li>Depende de la finalidad. Si no identificar una solicitud prioritaria tiene consecuencias graves, el falso negativo puede ser especialmente costoso. La entidad debe definirlo antes de elegir el umbral.</li>
+</ol>
+<p><strong>Ejercicio 6</strong></p>
+<p>Las respuestas deben reconocer que los datos históricos pueden representar de forma desigual a los grupos, que se deben limitar los datos recolectados a una finalidad legítima y que las decisiones requieren auditoría y revisión humana. Una estrategia posible es comparar tasas de falsos positivos, falsos negativos y sensibilidad entre grupos, siempre que sea legal y metodológicamente apropiado.</p>
+</section>
+<section id="síntesis-de-la-unidad" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> .Síntesis de la unidad</h1>
+<p>La computación proporciona los fundamentos y la infraestructura para procesar información. Big Data describe los retos asociados con el volumen, la velocidad, la variedad, la veracidad y el valor de los datos. La ciencia de datos integra estadística, matemáticas, programación y conocimiento del contexto para convertir datos en información útil.</p>
+<p>La inteligencia artificial comprende métodos para desarrollar sistemas capaces de realizar tareas complejas. Dentro de ella, el aprendizaje automático permite aprender patrones a partir de datos. El aprendizaje supervisado utiliza ejemplos con respuestas conocidas para construir modelos de regresión o clasificación.</p>
+<p>La estadística cumple un papel fundamental en todas las etapas: describe los datos, apoya la modelación, cuantifica incertidumbre y permite evaluar resultados. Un modelo debe probarse con datos que no participaron en su entrenamiento y sus resultados deben interpretarse considerando el contexto, la calidad de los datos y las consecuencias de los errores.</p>
+</section>
+<section id="glosario" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> .Glosario</h1>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Término</th>
+<th>Definición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Algoritmo</td>
+<td>Secuencia finita de instrucciones para resolver una tarea</td>
+</tr>
+<tr class="even">
+<td>Big Data</td>
+<td>Datos cuya escala o complejidad exige métodos especializados</td>
+</tr>
+<tr class="odd">
+<td>Ciencia de datos</td>
+<td>Campo interdisciplinario para obtener conocimiento de los datos</td>
+</tr>
+<tr class="even">
+<td>Inteligencia artificial</td>
+<td>Campo que desarrolla sistemas para realizar tareas asociadas con capacidades inteligentes</td>
+</tr>
+<tr class="odd">
+<td>Aprendizaje automático</td>
+<td>Métodos que aprenden patrones a partir de datos</td>
+</tr>
+<tr class="even">
+<td>Aprendizaje supervisado</td>
+<td>Aprendizaje con observaciones que contienen respuestas conocidas</td>
+</tr>
+<tr class="odd">
+<td>Variable predictora</td>
+<td>Característica utilizada para estimar una respuesta</td>
+</tr>
+<tr class="even">
+<td>Variable objetivo</td>
+<td>Resultado que se desea predecir</td>
+</tr>
+<tr class="odd">
+<td>Regresión</td>
+<td>Modelación de una respuesta cuantitativa</td>
+</tr>
+<tr class="even">
+<td>Clasificación</td>
+<td>Asignación de observaciones a categorías</td>
+</tr>
+<tr class="odd">
+<td>Entrenamiento</td>
+<td>Ajuste del modelo utilizando datos</td>
+</tr>
+<tr class="even">
+<td>Validación</td>
+<td>Comparación y selección de modelos o configuraciones</td>
+</tr>
+<tr class="odd">
+<td>Prueba</td>
+<td>Evaluación final con datos reservados</td>
+</tr>
+<tr class="even">
+<td>Sobreajuste</td>
+<td>Ajuste excesivo al conjunto de entrenamiento</td>
+</tr>
+<tr class="odd">
+<td>Fuga de información</td>
+<td>Uso indebido de información que no estaría disponible al predecir</td>
+</tr>
+<tr class="even">
+<td>Matriz de confusión</td>
+<td>Tabla que compara clases observadas y predichas</td>
+</tr>
+<tr class="odd">
+<td>MAE</td>
+<td>Error absoluto medio</td>
+</tr>
+<tr class="even">
+<td>RMSE</td>
+<td>Raíz del error cuadrático medio</td>
+</tr>
+<tr class="odd">
+<td>Sensibilidad</td>
+<td>Proporción de positivos reales identificados</td>
+</tr>
+<tr class="even">
+<td>Especificidad</td>
+<td>Proporción de negativos reales identificados</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="referencias-bibliográficas" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> .Referencias bibliográficas</h1>
+<p>Las referencias se presentan en estilo APA 7. Se recomienda consultar las ediciones y recursos originales al preparar trabajos académicos.</p>
+<p>Bishop, C. M. (2006). <em>Pattern recognition and machine learning</em>. Springer.</p>
+<p>Breiman, L. (2001). Statistical modeling: The two cultures. <em>Statistical Science, 16</em>(3), 199–231. https://doi.org/10.1214/ss/1009213726</p>
+<p>Domingos, P. (2012). A few useful things to know about machine learning. <em>Communications of the ACM, 55</em>(10), 78–87. https://doi.org/10.1145/2347736.2347755</p>
+<p>Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The elements of statistical learning: Data mining, inference, and prediction</em> (2nd ed.). Springer. https://doi.org/10.1007/978-0-387-84858-7</p>
+<p>James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J. (2023). <em>An introduction to statistical learning: With applications in R</em> (2nd ed.). Springer. https://www.statlearning.com/</p>
+<p>Kitchin, R. (2014). <em>The data revolution: Big data, open data, data infrastructures and their consequences</em>. SAGE.</p>
+<p>McCarthy, J., Minsky, M. L., Rochester, N., &amp; Shannon, C. E. (2006). A proposal for the Dartmouth summer research project on artificial intelligence, August 31, 1955. <em>AI Magazine, 27</em>(4), 12–14. (Propuesta original de 1955).</p>
+<p>Turing, A. M. (1950). Computing machinery and intelligence. <em>Mind, 59</em>(236), 433–460. https://doi.org/10.1093/mind/LIX.236.433</p>
+<p>Wickham, H., &amp; Grolemund, G. (2017). <em>R for data science: Import, tidy, transform, visualize, and model</em>. O’Reilly Media. https://r4ds.hadley.nz/</p>
+<section id="recursos-digitales" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="recursos-digitales"><span class="header-section-number">13.1</span> Recursos digitales</h2>
+<ul>
+<li>R Project: https://www.r-project.org/</li>
+<li>ggplot2: https://ggplot2.tidyverse.org/</li>
+<li>Quarto: https://quarto.org/</li>
+<li>An Introduction to Statistical Learning: https://www.statlearning.com/</li>
+<li>Google Machine Learning Crash Course:</li>
+</ul>
+<p>https://developers.google.com/machine-learning/crash-course</p>
+<p>Los datos del laboratorio son simulados y se utilizan exclusivamente con fines didácticos. Para una aplicación institucional deben sustituirse por datos autorizados, documentando su origen, tratamiento, calidad y limitaciones.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<script src="index_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
